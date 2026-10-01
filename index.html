@@ -1,0 +1,1502 @@
+<!doctype html>
+<!-- TriCoach Dashboard · Daten aus der TriCoach-Datenbank (Supabase), Belastung aus performance_metrics -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="author" content="TriCoach AI">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TriCoach">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F2F1F6">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEIklEQVR4nO3dsW0jRxiG4TnjUidWquByl2DAKsM9uKDrwWUocAnODVipIjfggDBBSPwokbs788/yeaKDjtQOOO/OkEvy7suvP/3T4JwfRg+AusRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDqKvowdA9P3v397/8Pdvf3QbwBf/MH5BZ7M41ScRcdTyYRantk7Ec45CrirjhttfSxxV3DbTm/YhjhKWzPF2fYiDSBzjLT/1N1o8xEEkjsHWOum3WDzEQSQOInEQiYNIHETiIBLHYGu9s7rFO7TiIBLHeMtP+o0+2CEOInGUsOTU3+7zYOKo4rY53vSTguIo5NqZ3vozpL6aUMjz62Nrf7bW/vr3l8u37PPpc3FU8fz6ePzzzz/GRA5/1dpLhyGJo67/O3jr6aFHGc1zjiJOl43LupXRxFFBzTKaOLhAHIOVXTaaOMaqXEYTBxeIY5jiy0YTxyj1y2ji4AJxDDDFstHE0d8sZTRxdPb5MioQR1HDl40mjp4m2lAOxNHJXBvKgTjKKbJsNHH0Md2GciCOzU1aRhMHF4hjW/MuG00cm5q6jCYOLhDHVmZfNtrdfm/lzcytPj07KKPdYRxnp+3ww7XmacaLoWfd0bby/Pp4edr6T2rlZaPdw//UdO2UL5ywfWwoB3teOT5cKtK9lhzx5vsWtM84bsvi9O4rDuas+stG29+2suK8Xjt/e9pQDvYTxxan++dncX9ltB28lN10C3h+fZxoLlc38crR7dnfh33sctlok8ZR6oLEXsto071aWfgyZMlx+x90uGlWjgrT8/7U3/Gy0erHsXoTp5N0wy+/7e4zltEqbyur7yBPDy9vJumGOauwgHVTceXYdLVY5XBPDy+7XzZatTg6Z7Hdca8dQE1VLoKNyuJ447vaLz5p8Moxtok3Sg2mgmFx1JyJge/bFTRgW6mZxfFX2V+Oeq8cq786XfG3HS0f5A6WjdY5jokW7SVD3UcZrWccq5TR83G/bcC7KaNVvkL6xvvrmx2O2PNwBU0QR/8sTg+96e2LKx3HwCxOx7D6LWcx8iLYhU292gP9mecf1ca8XJXL5wdlH98Pr3+UHfkSVS6fT/Hgpj6mGPwNxq8cEz2yh6Fu/Q39Omq9ZU8ppV+tMJY4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcRP8BQnc9T6+El0oAAAAASUVORK5CYII=">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEIklEQVR4nO3dsW0jRxiG4TnjUidWquByl2DAKsM9uKDrwWUocAnODVipIjfggDBBSPwokbs788/yeaKDjtQOOO/OkEvy7suvP/3T4JwfRg+AusRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDqKvowdA9P3v397/8Pdvf3QbwBf/MH5BZ7M41ScRcdTyYRantk7Ec45CrirjhttfSxxV3DbTm/YhjhKWzPF2fYiDSBzjLT/1N1o8xEEkjsHWOum3WDzEQSQOInEQiYNIHETiIBLHYGu9s7rFO7TiIBLHeMtP+o0+2CEOInGUsOTU3+7zYOKo4rY53vSTguIo5NqZ3vozpL6aUMjz62Nrf7bW/vr3l8u37PPpc3FU8fz6ePzzzz/GRA5/1dpLhyGJo67/O3jr6aFHGc1zjiJOl43LupXRxFFBzTKaOLhAHIOVXTaaOMaqXEYTBxeIY5jiy0YTxyj1y2ji4AJxDDDFstHE0d8sZTRxdPb5MioQR1HDl40mjp4m2lAOxNHJXBvKgTjKKbJsNHH0Md2GciCOzU1aRhMHF4hjW/MuG00cm5q6jCYOLhDHVmZfNtrdfm/lzcytPj07KKPdYRxnp+3ww7XmacaLoWfd0bby/Pp4edr6T2rlZaPdw//UdO2UL5ywfWwoB3teOT5cKtK9lhzx5vsWtM84bsvi9O4rDuas+stG29+2suK8Xjt/e9pQDvYTxxan++dncX9ltB28lN10C3h+fZxoLlc38crR7dnfh33sctlok8ZR6oLEXsto071aWfgyZMlx+x90uGlWjgrT8/7U3/Gy0erHsXoTp5N0wy+/7e4zltEqbyur7yBPDy9vJumGOauwgHVTceXYdLVY5XBPDy+7XzZatTg6Z7Hdca8dQE1VLoKNyuJ447vaLz5p8Moxtok3Sg2mgmFx1JyJge/bFTRgW6mZxfFX2V+Oeq8cq786XfG3HS0f5A6WjdY5jokW7SVD3UcZrWccq5TR83G/bcC7KaNVvkL6xvvrmx2O2PNwBU0QR/8sTg+96e2LKx3HwCxOx7D6LWcx8iLYhU292gP9mecf1ca8XJXL5wdlH98Pr3+UHfkSVS6fT/Hgpj6mGPwNxq8cEz2yh6Fu/Q39Omq9ZU8ppV+tMJY4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcRP8BQnc9T6+El0oAAAAASUVORK5CYII=">
+<title>TriCoach Dashboard</title>
+<style>
+:root{
+  --bg:#F2F1F6;--card:#FFFFFF;--surf:#F7F6FA;--track:#EEEDF3;
+  --ink:#0E0D12;--ink2:#55545F;--label:#6E6D78;--deco:#A3A2AD;--line:rgba(20,16,48,.07);
+  --acc:#3E12E3;--acc-l:#5B36F0;--acc-d:#2E0BB0;--acc-bg:#ECE8FE;
+  --r1:#DCD5FC;--r2:#B8A9F8;--r3:#8C74F2;--r4:#6242EA;--r5:#3E12E3;
+  --lime:#D8FF4F;--warn:#C2410C;--warn-bg:#FFF1E6;--neutral:#CFCDDA;
+  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  --shadow:0 0 0 1px rgba(20,16,48,.035),0 1px 2px rgba(20,16,48,.04),0 12px 32px -18px rgba(30,20,90,.16);
+  --shadow-h:0 0 0 1px rgba(20,16,48,.05),0 2px 4px rgba(20,16,48,.05),0 18px 40px -16px rgba(30,20,90,.24);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+html{color-scheme:light;scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--sys);font-size:14px;line-height:1.45;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  background:radial-gradient(900px 520px at 100% 0,#fff 0,rgba(255,255,255,0) 70%) no-repeat,var(--bg);background-color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:active{transform:scale(.97);transition:transform 60ms}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+svg{display:block}
+.app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;padding:20px 16px 16px 20px;display:flex;flex-direction:column;gap:14px}
+.main{min-width:0;padding:0 28px 120px 12px;position:relative}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#5B36F0,#2E0BB0);display:grid;place-items:center;position:relative;flex:none}
+.logo svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.logo i{position:absolute;right:5px;top:5px;width:6px;height:6px;border-radius:50%;background:var(--lime)}
+.brand b{font-family:var(--disp);font-size:15px;font-weight:650;letter-spacing:-.01em;display:block;line-height:1.15}
+.brand small{font-size:11.5px;color:var(--label);display:block}
+.brand .ver{margin-left:auto}
+.search{display:flex;align-items:center;gap:8px;height:40px;background:#fff;border-radius:14px;padding:0 12px;box-shadow:var(--shadow);color:var(--label);font-size:13.5px;width:100%;text-align:left}
+.search kbd{margin-left:auto;font:inherit;font-size:11.5px;color:var(--label);background:var(--surf);border-radius:6px;padding:1px 6px}
+.navcard{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:8px;overflow:auto;min-height:0;flex:0 1 auto}
+.navcard a{display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;border-radius:14px;color:var(--ink2);text-decoration:none;font-size:13.5px;font-weight:500;position:relative}
+.navcard a:hover{background:var(--surf)}
+.navcard a.on{background:var(--acc-bg);color:var(--acc-d);font-weight:600}
+.navcard a svg,.tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.navcard .cnt{margin-left:auto;background:var(--acc);color:#fff;font-size:11px;font-weight:600;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 6px}
+.srccard{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:14px 16px;font-size:12.5px;color:var(--ink2)}
+.srccard .row{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink);font-size:13px;margin-bottom:4px}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--acc);position:relative;flex:none}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--acc);opacity:0;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{opacity:.5;transform:scale(.6)}100%{opacity:0;transform:scale(1.5)}}
+.srccard button{margin-top:8px;font-size:12.5px;font-weight:600;color:var(--acc-d)}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:6px 4px}
+.me .av{width:36px;height:36px;border-radius:50%;background:var(--acc-bg);color:var(--acc-d);display:grid;place-items:center;font-weight:650}
+.me b{display:block;font-size:13.5px}.me small{font-size:12px;color:var(--label)}
+.top{position:sticky;top:0;z-index:30;height:78px;display:flex;align-items:center;gap:14px;padding:0 4px;margin:0 -28px 0 -12px;padding-left:12px;padding-right:28px;background:rgba(242,241,246,.74);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.top h1{font-family:var(--disp);font-size:17px;font-weight:650;letter-spacing:-.02em}
+.top .date{font-size:12.5px;color:var(--label)}
+.top .sp{flex:1}
+.top .mob{display:none}
+.iconbtn{position:relative;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center}
+.iconbtn svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.iconbtn .dot{position:absolute;right:9px;top:9px;width:9px;height:9px;border-radius:50%;background:#FF3B30;box-shadow:0 0 0 2px #fff}
+.btn{height:40px;padding:0 18px;border-radius:20px;background:var(--acc);color:#fff;font-weight:600;font-size:13.5px}
+.seg{position:relative;display:inline-flex;background:rgba(20,16,48,.065);border-radius:99px;padding:3px}
+.seg button{position:relative;z-index:1;padding:0 14px;height:30px;border-radius:99px;font-size:12.5px;font-weight:600;color:var(--label);transition:color .2s}
+.seg button[aria-pressed=true]{color:var(--ink)}
+.seg .thumb{position:absolute;top:3px;bottom:3px;left:0;width:0;border-radius:99px;background:#fff;box-shadow:0 1px 3px rgba(20,16,48,.14),0 0 0 .5px rgba(20,16,48,.04);transition:transform .32s cubic-bezier(.34,1.26,.5,1),width .32s cubic-bezier(.34,1.26,.5,1)}
+.seg.on-acc{background:rgba(255,255,255,.14)}
+.seg.on-acc button{color:rgba(255,255,255,.72)}
+.seg.on-acc button[aria-pressed=true]{color:var(--acc)}
+.pagepad{padding-top:6px}
+.sec{margin-top:40px}
+.sec-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sec-h h2{font-family:var(--disp);font-size:22px;font-weight:650;letter-spacing:-.026em}
+.sec-h span{color:var(--label);font-size:13.5px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.card{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:24px;position:relative;min-width:0;transition:box-shadow .25s,transform .25s}
+.card:hover{box-shadow:var(--shadow-h)}
+.card.flash{animation:flash 1.4s}
+@keyframes flash{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 3px var(--acc),var(--shadow-h)}}
+.ct{font-size:15px;font-weight:600;letter-spacing:-.005em}
+.cs{font-size:12.5px;color:var(--label);margin-top:2px}
+.chead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.big{font-family:var(--disp);font-weight:640;letter-spacing:-.04em;line-height:1;font-variant-numeric:proportional-nums}
+.big .ts{display:inline-block;width:.2em}
+.big small{font-size:.38em;font-weight:600;letter-spacing:-.01em;color:var(--label);margin-left:.18em}
+.tab-n{font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:99px;background:var(--surf);font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.chip.acc{background:var(--acc-bg);color:var(--acc-d);font-weight:600}
+.chip.warn{background:var(--warn-bg);color:var(--warn);font-weight:600}
+.chip.white{background:#fff;box-shadow:var(--shadow)}
+.chip svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.surf{background:var(--surf);border-radius:18px;padding:14px 16px}
+.surf b{display:block;font-family:var(--disp);font-size:22px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin-top:4px}
+.surf span{font-size:12.5px;color:var(--label)}
+.surf em{font-style:normal;display:block;font-size:12px;color:var(--label);margin-top:2px}
+.foot{font-size:12px;color:var(--label);margin-top:14px;line-height:1.4}
+.chartbox{position:relative;width:100%}
+.chartbox svg{width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-bottom:8px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sr table{width:max-content}
+.tip{position:fixed;z-index:90;pointer-events:none;background:rgba(14,13,20,.94);color:#fff;border-radius:14px;padding:10px 13px;font-size:12.5px;max-width:260px;opacity:0;transition:opacity .12s;box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+.tip .d{font-size:11.5px;color:rgba(255,255,255,.62);margin-bottom:4px}
+.tip .r{display:flex;align-items:center;gap:6px;line-height:1.5}
+.tip .r i{width:10px;height:3px;border-radius:2px;display:inline-block}
+.tip .r b{font-weight:650}.tip .r span{color:rgba(255,255,255,.6)}
+/* hero */
+.hero{grid-column:span 4;padding:10px 4px 0}
+.hero .tile{width:76px;height:76px;border-radius:24px;background:linear-gradient(135deg,#fff,#ECE8FE);display:grid;place-items:center;font-size:42px;position:relative;box-shadow:var(--shadow)}
+.hero .tile i{position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px var(--bg)}
+.hero h2{font-family:var(--disp);font-size:52px;font-weight:650;letter-spacing:-.045em;line-height:1.02;margin:22px 0 14px}
+.hero h2 .p{color:var(--deco)}
+.hero p{font-size:16px;color:var(--ink2);max-width:34ch;line-height:1.45}
+.hero .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.year{grid-column:span 5;background:linear-gradient(150deg,#5B36F0,#3E12E3 45%,#2A0AA6);color:#fff;overflow:hidden;padding:24px 24px 18px;position:relative;isolation:isolate}
+.year::before{content:"";position:absolute;left:-60px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.22);filter:blur(60px);z-index:-1}
+.year::after{content:"";position:absolute;right:-70px;bottom:-90px;width:300px;height:300px;border-radius:50%;background:rgba(10,0,60,.5);filter:blur(60px);z-index:-1}
+.year .streak{position:absolute;left:-20%;top:-10%;width:60%;height:140%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.08),transparent);transform:rotate(14deg);z-index:-1;pointer-events:none}
+.year .top1{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.8);font-weight:500}
+.year .big{font-size:68px;color:#fff;margin:18px 0 12px}
+.year .big small{color:rgba(255,255,255,.72)}
+.year .three{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.75)}
+.year .three b{display:block;font-family:var(--disp);font-size:20px;color:#fff;font-weight:640;letter-spacing:-.02em}
+.sky{margin-top:6px;position:relative}
+.sky svg{width:100%;height:auto;overflow:visible}
+.stack{grid-column:span 3;display:grid;gap:20px;grid-template-rows:auto 1fr}
+.formv{display:flex;align-items:baseline;gap:10px;margin:12px 0 14px}
+.formv .big{font-size:42px}.formv span{font-size:14px;color:var(--ink2)}
+.pills{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;position:relative}
+.pills i{height:8px;border-radius:4px;background:var(--track);display:block}
+.pills i.on{background:var(--r1)}
+.pins{position:relative;height:0}
+.pins b{position:absolute;top:-13px;width:14px;height:14px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 2px #fff;transform:translateX(-50%)}
+.scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--label);margin-top:6px}
+.two{display:flex;justify-content:space-between;margin-top:14px;font-size:12.5px;color:var(--label)}
+.two b{display:block;font-size:18px;color:var(--ink);font-family:var(--disp);letter-spacing:-.02em}
+.statcard .stat{font-family:var(--disp);font-size:30px;font-weight:640;letter-spacing:-.035em;line-height:1.05;margin:10px 0 8px}
+/* befund */
+.reveal{grid-column:span 12;display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:32px}
+.orb{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8C74F2,#3E12E3 55%,#1F0590);display:grid;place-items:center;flex:none}
+.orb svg{width:15px;height:15px;fill:#fff}
+.orb.big44{width:44px;height:44px;border-radius:15px}.orb.big44 svg{width:22px;height:22px}
+.rv-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.rv-top small{font-size:12.5px;color:var(--label)}
+.reveal h3{font-family:var(--disp);font-size:40px;line-height:1.08;font-weight:650;letter-spacing:-.035em}
+.reveal h3 .acc{color:var(--acc);white-space:nowrap}
+.reveal p.s{font-size:16px;color:var(--ink2);margin:16px 0 20px;line-height:1.45}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.nums .big{font-size:34px}.nums span{display:block;font-size:12.5px;color:var(--label);margin-top:6px}
+details.calc{margin-top:20px}
+details.calc summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--acc-d);list-style:none}
+details.calc summary::-webkit-details-marker{display:none}
+details.calc ol{margin:10px 0 0 18px;color:var(--ink2);font-size:13px;line-height:1.5}
+.ins{grid-column:span 4;cursor:pointer;display:flex;flex-direction:column;text-align:left}
+.ins:hover{transform:translateY(-3px);box-shadow:var(--shadow-h)}
+.ins .top2{display:flex;align-items:center;gap:10px}
+.ins .ico{width:40px;height:40px;border-radius:13px;background:var(--acc-bg);display:grid;place-items:center;color:var(--acc);flex:none}
+.ins .ico.warn{background:var(--warn-bg);color:var(--warn)}
+.ins .ico svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ins .val{margin-left:auto;font-family:var(--disp);font-size:30px;font-weight:640;letter-spacing:-.04em;line-height:1}
+.ins h4{font-size:16px;font-weight:600;margin:16px 0 6px;letter-spacing:-.01em}
+.ins p{color:var(--ink2);font-size:14px;flex:1}
+.ins .ev{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--label)}
+.ins .ev svg{width:16px;height:16px;stroke:var(--acc);fill:none;stroke-width:1.8;stroke-linecap:round;flex:none}
+/* gauge etc */
+.gauge{position:relative;max-width:300px;margin:0 auto}
+.gauge .mid{position:absolute;left:0;right:0;bottom:6px;text-align:center}
+.gauge .mid .big{font-size:44px}.gauge .mid span{font-size:13px;color:var(--ink2)}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.rings{display:flex;justify-content:center;margin:6px 0 14px}
+.ring3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.ring3 div{font-size:12.5px;color:var(--ink2)}
+.ring3 .big{font-size:26px;display:block;color:var(--ink);margin:4px 0}
+.ring3 i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.ring3 em{font-style:normal;display:block;font-size:11.5px;color:var(--label);line-height:1.3}
+.cal{overflow-x:auto;padding-bottom:6px}
+.calrow{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.calrow .cal{flex:1 1 420px;min-width:0}
+.cal3{display:grid;gap:12px;min-width:200px}
+.cal3 div{border-left:3px solid var(--r3);padding-left:12px}
+.cal3 b{display:block;font-family:var(--disp);font-size:24px;font-weight:640;letter-spacing:-.03em}
+.cal3 span{font-size:12.5px;color:var(--label)}
+.lg{display:flex;align-items:center;gap:4px;margin-top:10px;font-size:12px;color:var(--label)}
+.lg i{width:13px;height:13px;border-radius:4px;display:inline-block}
+.zbar{display:flex;gap:2px;height:44px;margin:16px 0 12px}
+.zbar i{display:block;border-radius:8px;min-width:3px}
+.zleg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:12px;color:var(--ink2)}
+.zleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
+.zleg b{display:block;font-size:15px;margin-top:2px}
+.rec{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rec .surf{position:relative}
+.rec .new{position:absolute;right:10px;top:10px}
+.rec b{font-size:20px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.facts .surf{transition:background .3s,color .3s}
+.facts .surf.hi{background:var(--acc);color:#fff}
+.facts .surf.hi span,.facts .surf.hi em{color:rgba(255,255,255,.8)}
+.week{display:grid;gap:2px}
+.wrow{display:grid;grid-template-columns:78px 1fr auto 28px;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;position:relative}
+.wrow.today{background:var(--surf)}
+.wrow.today::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:var(--acc)}
+.wrow .dd b{display:block;font-size:13.5px}.wrow .dd span{font-size:12px;color:var(--label)}
+.wrow .what b{font-size:14px;font-weight:600}.wrow .what span{display:block;font-size:12px;color:var(--label)}
+.wrow .km{font-size:13px;color:var(--ink2);text-align:right}
+.circ{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--neutral);display:grid;place-items:center}
+.circ.done{background:var(--acc);border-color:var(--acc)}
+.circ svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.coach .qs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.coach .qs button{border:1px solid rgba(20,16,48,.14);border-radius:99px;padding:7px 13px;font-size:13px;font-weight:500;background:#fff}
+.coach .qs button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.ans{background:var(--surf);border-radius:20px;padding:18px;min-height:230px}
+.ans h4{font-family:var(--disp);font-size:18px;font-weight:650;letter-spacing:-.02em;margin-bottom:8px}
+.ans p{color:var(--ink2);margin-bottom:8px}
+.ans .nums .big{font-size:24px}
+.cur{display:inline-block;width:2px;height:1em;background:var(--acc);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.ask{display:flex;gap:8px;margin-top:12px}
+.ask input{flex:1;min-width:0;height:44px;border-radius:22px;border:1px solid rgba(20,16,48,.12);padding:0 16px;font:inherit;background:#fff}
+.ask button{width:44px;height:44px;border-radius:50%;background:var(--acc);display:grid;place-items:center}
+.ask button svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bars h{display:block}
+.hb{display:grid;grid-template-columns:90px 1fr 56px;gap:10px;align-items:center;margin:12px 0;font-size:13px}
+.hb .t{height:10px;border-radius:5px;background:var(--track);overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--acc);border-radius:5px}
+.hb span:last-child{text-align:right;color:var(--ink2)}
+.kv{display:grid;gap:10px;font-size:13px}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.kv div:last-child{border:0}.kv span{color:var(--label)}.kv b{font-weight:600;text-align:right}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{height:30px;padding:0 13px;border-radius:99px;background:var(--surf);font-size:12.5px;font-weight:500}
+.filters button[aria-pressed=true]{background:var(--ink);color:#fff}
+.twrap{overflow-x:auto}
+table.log{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+table.log th{text-align:left;font-weight:600;color:var(--label);font-size:12px;padding:8px 10px;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line)}
+table.log td{padding:10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+table.log td.nm{white-space:normal;min-width:150px}
+.more{margin-top:14px;font-weight:600;color:var(--acc-d);font-size:13.5px}
+.sp-chip{display:inline-block;height:22px;line-height:22px;padding:0 9px;border-radius:99px;background:var(--surf);font-size:12px}
+.sp-chip.run{background:var(--acc-bg);color:var(--acc-d);font-weight:600}
+footer{margin-top:48px;font-size:12.5px;color:var(--label);display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap}
+footer p{max-width:60ch}
+.empty{color:var(--label);font-size:13.5px;padding:18px 0}
+/* island */
+.island{position:fixed;top:17px;left:calc(272px + (100vw - 272px)/2);transform:translateX(-50%);z-index:60;background:#0B0A10;color:#fff;border-radius:22px;height:44px;width:176px;overflow:hidden;cursor:pointer;transition:width .55s cubic-bezier(.34,1.26,.5,1),height .55s cubic-bezier(.34,1.26,.5,1),border-radius .55s}
+.island.open{width:min(460px,calc(100vw - 32px));height:86px;border-radius:30px}
+.island .pill{position:absolute;inset:0;height:44px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:13px;font-weight:600;white-space:nowrap;transition:opacity .25s}
+.island .pill i{width:8px;height:8px;border-radius:50%;background:var(--lime);margin-left:auto}
+.island.open .pill{opacity:0}
+.island .exp{position:absolute;inset:0;padding:14px 18px;opacity:0;transition:opacity .3s .1s;display:flex;gap:12px;align-items:center}
+.island.open .exp{opacity:1}
+.island .exp small{font-size:11.5px;color:rgba(255,255,255,.6);display:block}
+.island .exp span.t{font-size:13.5px;line-height:1.3;display:block;margin-top:2px}
+.island .exp b{margin-left:auto;font-size:13px;color:#fff;background:rgba(255,255,255,.14);border-radius:99px;padding:6px 12px;white-space:nowrap}
+.glass{position:fixed;right:18px;bottom:18px;z-index:40;background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:99px;box-shadow:var(--shadow);padding:8px 14px;font-size:12.5px;color:var(--ink2);display:flex;gap:8px;align-items:center}
+.glass i{width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.tabbar{display:none}
+/* palette / overlays */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(14,13,20,.32);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding-top:14vh}
+.ov.show{display:flex}
+.pal{width:min(640px,calc(100vw - 24px));background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);border-radius:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.4);overflow:hidden}
+.pal input{width:100%;height:56px;border:0;padding:0 22px;font:inherit;font-size:16px;background:transparent;border-bottom:1px solid var(--line);outline:0}
+.pal .list{max-height:52vh;overflow:auto;padding:8px}
+.pal h6{font-size:11.5px;color:var(--label);font-weight:600;padding:10px 12px 4px;text-transform:none}
+.pal button{display:flex;width:100%;text-align:left;padding:10px 12px;border-radius:12px;font-size:14px;align-items:center;gap:10px}
+.pal button.sel{background:var(--acc-bg);color:var(--acc-d)}
+.share{width:min(360px,calc(100vw - 32px));aspect-ratio:9/16;max-height:86vh;border-radius:32px;overflow:hidden;background:#fff;display:flex;flex-direction:column;box-shadow:0 30px 80px -20px rgba(0,0,0,.45)}
+.share .t{flex:0 0 46%;background:linear-gradient(150deg,#5B36F0,#2E0BB0);color:#fff;padding:26px 24px 0;display:flex;flex-direction:column;overflow:hidden}
+.share .t small{font-size:13px;color:rgba(255,255,255,.8)}
+.share .t .big{font-size:56px;color:#fff;margin-top:6px}
+.share .t .sk{margin-top:auto}
+.share .b{flex:1;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.share .b h5{font-family:var(--disp);font-size:20px;line-height:1.15;font-weight:650;letter-spacing:-.03em}
+.share .b h5 .acc{color:var(--acc);white-space:nowrap}
+.share .b .nums .big{font-size:22px}.share .b .nums span{font-size:11px}
+.share .b .f{margin-top:auto;font-size:11px;color:var(--label);display:flex;justify-content:space-between}
+.login{width:min(380px,calc(100vw - 32px));background:#fff;border-radius:28px;padding:26px;box-shadow:0 30px 80px -20px rgba(0,0,0,.4)}
+.login h3{font-family:var(--disp);font-size:20px;letter-spacing:-.02em;margin-bottom:6px}
+.login p{font-size:13px;color:var(--ink2);margin-bottom:14px}
+.login input{width:100%;height:44px;border-radius:14px;border:1px solid rgba(20,16,48,.14);padding:0 14px;font:inherit;margin-bottom:10px}
+.login .err{color:var(--warn);font-size:12.5px;min-height:18px;margin-bottom:8px}
+.login .row{display:flex;gap:8px;justify-content:flex-end}
+.login .ghost{padding:0 16px;height:40px;border-radius:20px;background:var(--surf);font-weight:600;font-size:13.5px}
+/* motion */
+.anim .rv{opacity:0;transform:translateY(18px) scale(.985)}
+.anim .rv.in{opacity:1;transform:none;transition:opacity .55s,transform .9s cubic-bezier(.2,.9,.25,1);transition-delay:calc(var(--i,0)*70ms)}
+html[data-stand=voll] .rv{opacity:1!important;transform:none!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.anim .rv{opacity:1;transform:none}}
+@media (prefers-reduced-transparency:reduce){.top,.glass,.pal,.tabbar{-webkit-backdrop-filter:none;backdrop-filter:none;background:#fff}.ov{-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-contrast:more){:root{--label:#4A4953;--line:rgba(20,16,48,.25)}.card{box-shadow:0 0 0 1px rgba(20,16,48,.3)}}
+@media (max-width:1180px){
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .grid>*{grid-column:span 6}
+  .grid>.half{grid-column:span 3}
+  .ins{grid-column:span 3}
+  .reveal{grid-template-columns:1fr}
+  .stack{grid-template-columns:1fr 1fr;grid-template-rows:none}
+}
+@media (max-width:1023px){
+  .app{display:block}
+  .side{display:none}
+  .main{padding:0 16px 120px}
+  .top{margin:0 -16px;padding:0 16px}
+  .top .mob{display:grid}
+  .top .rng{display:none}
+  .island{left:50%}
+  .glass{bottom:96px;right:12px}
+  .tabbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;height:66px;border-radius:26px;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:var(--shadow-h);z-index:50;justify-content:space-around;align-items:center}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--label);text-decoration:none;font-weight:500;padding:6px 4px;min-width:56px}
+  .tab.on{color:var(--acc-d);font-weight:600}
+  .hero h2{font-size:44px}
+}
+@media (max-width:639px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .grid>*{grid-column:span 2}
+  .grid>.half,.ins{grid-column:span 2}
+  .card{padding:20px;border-radius:24px}
+  .hero h2{font-size:40px}
+  .year .big{font-size:54px}
+  .reveal{padding:22px}.reveal h3{font-size:30px}
+  .rec{grid-template-columns:repeat(2,1fr)}
+  .stack{grid-template-columns:1fr}
+  .nums .big{font-size:26px}
+  .zleg{grid-template-columns:repeat(3,1fr)}
+  .wrow{grid-template-columns:62px 1fr auto 24px;gap:8px;padding:10px 6px}
+  .hb{grid-template-columns:70px 1fr 50px}
+  .island.open{height:96px}
+}
+
+.msg{padding:12px 0;border-top:1px solid var(--line,rgba(0,0,0,.08))}.msg:first-of-type{border-top:0}.msg p{margin:4px 0 0;line-height:1.5}
+
+.pghead h2{font-family:var(--disp);font-size:38px;font-weight:650;letter-spacing:-.04em;line-height:1.05}
+.pghead h2 .p{color:var(--deco)}.pghead p{color:var(--ink2);font-size:15.5px;margin:8px 0 0}.pghead .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 22px}
+.year.wide{grid-column:span 12}.pg[hidden]{display:none}
+@media(max-width:700px){.pghead h2{font-size:30px}.year.wide{grid-column:span 2}}
+
+.mini{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.mt{background:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);min-width:0}
+.mt span{display:block;font-size:12px;color:var(--label);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt b{display:block;font-family:var(--disp);font-size:22px;font-weight:640;letter-spacing:-.03em;line-height:1.15;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mt b small{font-size:12px;font-weight:500;color:var(--label);margin-left:4px;letter-spacing:0}
+.mt em{display:block;font-style:normal;font-size:11.5px;color:var(--label);margin-top:2px;line-height:1.3}
+.selrow{display:flex;align-items:center;gap:10px;margin-bottom:12px}.selrow label{font-size:13px;color:var(--label)}
+.sel{flex:1;max-width:420px;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid rgba(14,13,18,.12);background:#fff;color:var(--ink)}
+.einhead{margin-bottom:12px}.einhead h3{font-family:var(--disp);font-size:22px;font-weight:650;letter-spacing:-.03em;margin-top:2px}
+.zones{display:grid;gap:9px}.zr{display:grid;grid-template-columns:28px 1fr 64px 40px;align-items:center;gap:10px;font-size:13px}
+.zr span{color:var(--label)}.zr i{display:block;height:10px;border-radius:6px;background:var(--surf);overflow:hidden}.zr u{display:block;height:100%;background:#3E12E3;border-radius:6px;text-decoration:none}
+.zr b{text-align:right;font-weight:600}.zr em{font-style:normal;color:var(--label);text-align:right}
+table.log tr.cur td{background:var(--surf);font-weight:600}
+.pghead h2{font-size:26px}.pghead p{font-size:13.5px;margin-top:4px}.pghead{margin-bottom:12px}
+@media(max-width:700px){.mini{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mt{padding:10px 12px}.mt b{font-size:19px}.selrow .sel{max-width:none}.zr{grid-template-columns:24px 1fr 52px 34px;gap:8px}}
+
+.lr{display:grid;grid-template-columns:1.1fr .8fr 1.3fr .7fr;gap:8px;padding:9px 6px;border-top:1px solid rgba(14,13,18,.07);font-size:13.5px}.lr.h{border-top:0;font-size:12px;color:var(--label);padding-top:0}.lr.on{background:var(--surf);border-radius:10px;font-weight:600}
+.zr.w{grid-template-columns:52px 1fr 64px 40px}
+
+.calbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.calnav{display:flex;align-items:center;gap:8px}.calnav b{font-size:15px;min-width:150px;text-align:center}
+.callegend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:12.5px;color:var(--label);margin-bottom:12px}.callegend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.ci{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:12px;background:var(--surf);margin:6px 0}.ci>i{width:10px;height:10px;border-radius:50%;background:var(--c);margin-top:5px;flex:none}
+.ci b{display:block;font-size:14px}.ci span,.ci em{display:block;font-size:12.5px;color:var(--label);font-style:normal}
+.weeklist{display:grid;gap:10px}.wd{display:grid;grid-template-columns:54px 1fr;gap:12px;padding:12px 14px}.wd.today{box-shadow:0 0 0 2px #3E12E3}
+.wdh b{display:block;font-size:15px}.wdh span{font-size:12.5px;color:var(--label)}.wdb .ci:first-child{margin-top:0}
+.monthcard{padding:12px}.mh,.mg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.mh span{text-align:center;font-size:12px;color:var(--label);padding:4px 0}
+.mc{border:0;background:var(--surf);border-radius:12px;min-height:58px;padding:6px;text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+.mc span{font-size:13px;font-weight:600}.mc.out{opacity:.4}.mc.today{box-shadow:inset 0 0 0 2px #3E12E3}.mc.sel{background:#E9E3FD}
+.dots{display:flex;gap:3px;flex-wrap:wrap}.dots i{width:9px;height:9px;border-radius:50%}
+@media(max-width:700px){.mc{min-height:48px;padding:5px}.calnav b{min-width:0;font-size:14px}.wd{grid-template-columns:44px 1fr}}
+
+.mh2{display:flex;gap:10px;align-items:center}.mh2 .orb{width:30px;height:30px}
+#morningCard,#chatCard{padding:14px 16px}#chatCard .ask{margin:0}
+@media(max-width:700px){#heuteTiles{gap:8px}#heuteTiles .mt{padding:8px 11px}#heuteTiles .mt b{font-size:17px}#heuteTiles .mt em{font-size:11px}.pghead h2{font-size:24px}.pghead p{display:none}#morningCard,#chatCard{padding:12px 14px}}
+
+#heuteTiles{grid-auto-flow:row}
+#heuteTiles .tall{grid-column:4;grid-row:1 / span 3;order:0;overflow:hidden}
+.o-form{order:1}.o-ready{order:2}.o-block{order:3}.o-fit{order:4}.o-rhr{order:5}.o-status{order:6}.o-last{order:7}.o-wx{order:8}.o-th{order:9}
+.pi{display:flex;gap:9px;align-items:flex-start;margin-top:10px}.pi>i{width:9px;height:9px;border-radius:50%;background:var(--c);margin-top:5px;flex:none}
+.pi div{min-width:0}.pi b{display:block;font-size:16px;font-weight:640;margin:0;white-space:normal}.pi b small{font-size:11.5px}.pi em{display:block;margin:0}
+@media(max-width:700px){#heuteTiles .tall{grid-column:2;grid-row:1 / span 3}
+.o-form{order:1}.o-block{order:2}.o-status{order:3}.o-ready{order:4}.o-wx{order:5}.o-fit{order:6}.o-rhr{order:7}.o-last{order:8}.o-th{order:9}}
+
+body.gate .app,body.gate .tabbar{visibility:hidden}
+
+</style>
+</head>
+<body>
+<div class="app">
+ <aside class="side">
+  <div class="brand"><span class="logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17c0-7 14-3 14-10"/><path d="M5 17h3M16 7h3"/></svg><i></i></span><div><b>TriCoach</b><small id="brandSub"></small></div><span class="chip acc ver">v9</span></div>
+  <button class="search" id="searchBtn" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg>Suchen<kbd>⌘K</kbd></button>
+  <nav class="navcard" id="nav" aria-label="Abschnitte"></nav>
+  <div class="srccard" id="srccard"></div>
+  <div class="me" id="me"></div>
+ </aside>
+ <div class="main">
+  <header class="top">
+   <button class="iconbtn mob" id="searchBtn2" type="button" aria-label="Suchen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg></button>
+   <div><h1 id="topTitle">Übersicht</h1><div class="date" id="topDate"></div></div>
+   <div class="sp"></div>
+   <div class="rng" id="rng"></div>
+      <button class="btn" id="liveTop" type="button">Live aktualisieren</button>
+  </header>
+  <main id="page" class="pagepad"></main>
+  <footer><p>TriCoach Dashboard v9 · Stand <span id="footDate"></span>. Die Zahlen kommen aus der TriCoach-Datenbank und werden in dieser Datei berechnet. Sie verlassen sie nur, wenn du „Live aktualisieren“ wählst und dich anmeldest.</p><p>Berechnet mit den Regeln aus deiner Performance Engine, keine Diagnose und keine medizinische Einschätzung.</p></footer>
+ </div>
+</div>
+<nav class="tabbar" id="tabs" aria-label="Hauptnavigation"></nav>
+<div class="ov" id="palOv" role="dialog" aria-label="Befehlspalette"><div class="pal"><input id="palIn" placeholder="Springen, Aktionen …" aria-label="Suche" autocomplete="off"><div class="list" id="palList"></div></div></div>
+<div class="ov" id="loginOv" style="align-items:center;padding-top:0" role="dialog" aria-label="Anmelden"><form class="login" id="loginForm"><h3>Live aktualisieren</h3><p>Melde dich mit deinem TriCoach-Konto an. Das Passwort geht nur an Supabase und wird nicht gespeichert, nur ein Sitzungs-Token in diesem Browser.</p><input id="loginMail" type="email" placeholder="E-Mail" autocomplete="username" required><input id="loginPw" type="password" placeholder="Passwort" autocomplete="current-password" required><div class="err" id="loginErr" role="alert"></div><div class="row"><button type="button" class="ghost" id="loginCancel">Abbrechen</button><button type="submit" class="btn" id="loginGo">Anmelden</button></div></form></div>
+
+<script type="application/json" id="snapshot">{"_online":true}</script>
+<script>
+/* ===== TriCoach Dashboard · Kern: Hilfen, Daten, Berechnung ===== */
+const SB = { url: 'https://orrowxnjxwdgxrdyqvfp.supabase.co', key: 'sb_publishable_Aw1jOhzbdjm3aQGYwfRy-g_U3RTTVwF' };
+const TZ = 'Europe/Berlin';
+const NAME = 'Daniel';
+const SPORTS = {
+  swim: { l: 'Schwimmen', s: 'Schwimmen' }, bike: { l: 'Rad', s: 'Rad' }, run: { l: 'Lauf', s: 'Lauf' },
+  strength: { l: 'Kraft', s: 'Kraft' }, hike: { l: 'Wandern', s: 'Wandern' }, brick: { l: 'Koppel', s: 'Koppel' }, other: { l: 'Sonstiges', s: 'Sonstiges' }
+};
+const SPORT_MAP = { cycling: 'bike', running: 'run', swimming: 'swim', strength_training: 'strength', hiking: 'hike', brick: 'brick' };
+const WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const WDL = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+const MON = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const NS = 'http://www.w3.org/2000/svg';
+
+/* ---- Format ---- */
+function fmt(n, d = 0) {
+  if (n == null || !isFinite(n)) return '–';
+  let s = Math.abs(n).toLocaleString('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/\./g, ' ');
+  return (n < 0 && Number(s.replace(/[^\d]/g, '')) !== 0 ? '−' : '') + s;
+}
+const sgn = (n, d = 0) => (n > 0 ? '+' : '') + fmt(n, d);
+function bigHtml(n, d = 0) { return fmt(n, d).replace(/ /g, '<span class="ts"></span>'); }
+const pad = n => String(n).padStart(2, '0');
+function dur(sec) { sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.round((sec % 3600) / 60); return m === 60 ? `${h + 1}:00` : `${h}:${pad(m)}`; }
+function hrs(sec, d = 1) { return fmt(sec / 3600, d); }
+function pace(sec) { if (!sec) return '–'; sec = Math.round(sec); return `${Math.floor(sec / 60)}:${pad(sec % 60)}`; }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+const median = a => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const sum = a => a.reduce((x, y) => x + y, 0);
+const mean = a => a.length ? sum(a) / a.length : null;
+
+/* ---- Datum ---- */
+const dtf = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+function localParts(ts) { const p = {}; for (const x of dtf.formatToParts(new Date(ts))) p[x.type] = x.value; return { date: `${p.year}-${p.month}-${p.day}`, h: +p.hour, m: +p.minute }; }
+const dn = s => { const [y, m, d] = s.split('-').map(Number); return Math.round(Date.UTC(y, m - 1, d) / 864e5); };
+const ds = n => { const t = new Date(n * 864e5); return `${t.getUTCFullYear()}-${pad(t.getUTCMonth() + 1)}-${pad(t.getUTCDate())}`; };
+const wdOf = n => (((n + 3) % 7) + 7) % 7; // 0 = Montag (1970-01-01 war Donnerstag)
+const monday = n => n - wdOf(n);
+const dLong = s => { const [y, m, d] = s.split('-').map(Number); return `${d}. ${MON[m - 1]} ${y}`; };
+const dShort = s => { const [, m, d] = s.split('-').map(Number); return `${d}. ${MON[m - 1]}`; };
+
+/* ---- SVG ---- */
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function svgText(parent, x, y, txt, attrs = {}) { const t = el('text', Object.assign({ x, y, 'font-size': 11.5, fill: '#6E6D78', 'font-family': 'inherit' }, attrs), parent); t.textContent = txt; return t; }
+function chart(box, draw) {
+  let last = 0;
+  const run = () => { const w = Math.floor(box.clientWidth); if (!w || w === last) return; last = w; const hh = box.offsetHeight; if (hh) box.style.minHeight = hh + 'px'; box.querySelectorAll('svg').forEach(s => s.remove()); draw(box, w); box.style.minHeight = ''; };
+  box._redraw = () => { last = 0; run(); };
+  if (box._ro) box._ro.disconnect();
+  box._ro = new ResizeObserver(run); box._ro.observe(box); run();
+}
+function srTable(box, caption, heads, rows) {
+  let sr = box.querySelector('.sr'); if (sr) sr.remove();
+  sr = document.createElement('div'); sr.className = 'sr';
+  const t = document.createElement('table'); const c = document.createElement('caption'); c.textContent = caption; t.appendChild(c);
+  const hr = t.insertRow(); heads.forEach(h => { const th = document.createElement('th'); th.textContent = h; hr.appendChild(th); });
+  rows.slice(0, 400).forEach(r => { const tr = t.insertRow(); r.forEach(v => { tr.insertCell().textContent = v; }); });
+  sr.appendChild(t); box.appendChild(sr);
+}
+
+/* ---- Tooltip ---- */
+const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
+function showTip(ev, date, rows) {
+  tip.textContent = '';
+  if (date) { const d = document.createElement('div'); d.className = 'd'; d.textContent = date; tip.appendChild(d); }
+  rows.forEach(r => {
+    const row = document.createElement('div'); row.className = 'r';
+    if (r.c) { const i = document.createElement('i'); i.style.background = r.c; row.appendChild(i); }
+    const b = document.createElement('b'); b.textContent = r.v; row.appendChild(b);
+    if (r.n) { const s = document.createElement('span'); s.textContent = r.n; row.appendChild(s); }
+    tip.appendChild(row);
+  });
+  tip.style.opacity = 1;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY - h - 10;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y < 8) y = ev.clientY + 16;
+  tip.style.left = Math.max(8, x) + 'px'; tip.style.top = y + 'px';
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+/* ---- Icons (24er Raster, Linie 1,8) ---- */
+const IC = {
+  home: '<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/>',
+  insight: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/>',
+  chart: '<path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 4-5 3 3 5-7"/>',
+  bars: '<path d="M6 19v-6M12 19V5M18 19v-9"/>',
+  gauge: '<path d="M4.5 17a8 8 0 1 1 15 0"/><path d="m12 13 4-4"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M9 20h6"/>',
+  cal: '<rect x="4" y="5.5" width="16" height="14" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
+  list: '<path d="M8 7h11M8 12h11M8 17h11"/><path d="M4.5 7h.01M4.5 12h.01M4.5 17h.01"/>',
+  db: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
+  run: '<circle cx="14.5" cy="5" r="1.8"/><path d="m8 21 3-5-2-3 3-4 3 3h3M9 9l-3 3"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>',
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
+  share: '<path d="M12 15V4M8 8l4-4 4 4"/><path d="M6 12v6.5h12V12"/>',
+  flag: '<path d="M6 21V4"/><path d="M6 5h11l-2 4 2 4H6"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  send: '<path d="M5 12h13M13 6l6 6-6 6"/>',
+  bolt: '<path d="M13 3 5 13.5h6L10 21l8-10.5h-6L13 3Z"/>',
+  heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.600-7 10-7 10Z"/>',
+  warn: '<path d="M12 4 3 19.500h18L12 4Z"/><path d="M12 10v4.500M12 17.200v.01"/>',
+  layers: '<path d="m12 4 8 4.500-8 4.500-8-4.500L12 4Z"/><path d="m4 13 8 4.500 8-4.500"/>'
+};
+const SPARK = '<path d="M12 2c.6 4.800 2.200 7.400 5.500 8.500-3.300 1.100-4.900 3.700-5.500 8.500-.6-4.800-2.200-7.400-5.500-8.500C9.800 9.400 11.400 6.800 12 2Z"/>';
+const ic = (n) => `<svg viewBox="0 0 24 24" aria-hidden="true">${IC[n] || ''}</svg>`;
+const sparkSvg = '<svg viewBox="0 0 24 24" aria-hidden="true">' + SPARK + '</svg>';
+const orbHtml = (cls = '') => `<span class="orb ${cls}">${sparkSvg}</span>`;
+
+/* ---- Supabase ---- */
+const Sess = {
+  tok: null,
+  save(rt) { try { localStorage.setItem('tc_rt', rt); } catch (e) { } },
+  load() { try { return localStorage.getItem('tc_rt'); } catch (e) { return null; } },
+  clear() { try { localStorage.removeItem('tc_rt'); } catch (e) { } },
+};
+async function authCall(grant, body) {
+  const r = await fetch(`${SB.url}/auth/v1/token?grant_type=${grant}`, { method: 'POST', headers: { apikey: SB.key, 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error_description || j.msg || 'Anmeldung fehlgeschlagen');
+  Sess.tok = j.access_token; Sess.save(j.refresh_token); return j;
+}
+async function rest(path, tries) {
+  tries = tries || 0;
+  const r = await fetch(`${SB.url}/rest/v1/${path}`, { headers: { apikey: SB.key, Authorization: 'Bearer ' + Sess.tok }, signal: AbortSignal.timeout(20000) });
+  if (!r.ok) {
+    let m = ''; try { const j = await r.json(); m = j.message || j.hint || ''; } catch (e) {}
+    /* frisches Token: Uhren von Login-Server und Datenbank weichen um Sekunden ab, kurz warten und erneut versuchen */
+    if (r.status === 401 && /future/i.test(m) && tries < 4) { await new Promise(f => setTimeout(f, 2500)); return rest(path, tries + 1); }
+    throw new Error('Abruf fehlgeschlagen (' + path.split('?')[0] + ', HTTP ' + r.status + (m ? ': ' + m : '') + ')' + (r.status === 403 ? ' – fehlende Leserechte (GRANT SELECT) für die Tabelle' : ''));
+  }
+  return r.json();
+}
+/* Rohdaten je Einheit aus raw_ingestion (Garmin-Zusammenfassung): feste Spaltenfolge ab Index 2 */
+const RAWC = ['pw', 'np', 'mx', 'b5', 'b10', 'b20', 'b60', 'h1', 'h2', 'h3', 'h4', 'h5', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'tss', 'ate', 'ante', 'stride', 'gct', 'vo', 'cad', 'swolf', 'sdist', 'load', 'hrmax'];
+const RAWP = ['avgPower', 'normPower', 'maxPower', 'maxAvgPower_300', 'maxAvgPower_600', 'maxAvgPower_1200', 'maxAvgPower_3600', 'hrTimeInZone_1', 'hrTimeInZone_2', 'hrTimeInZone_3', 'hrTimeInZone_4', 'hrTimeInZone_5', 'powerTimeInZone_1', 'powerTimeInZone_2', 'powerTimeInZone_3', 'powerTimeInZone_4', 'powerTimeInZone_5', 'powerTimeInZone_6', 'powerTimeInZone_7', 'trainingStressScore', 'aerobicTrainingEffect', 'anaerobicTrainingEffect', 'avgStrideLength', 'avgGroundContactTime', 'avgVerticalOscillation', null, 'averageSwolf', 'avgStrokeDistance', 'activityTrainingLoad', 'maxHR'];
+function rawRowFromLive(r) {
+  const p = r.raw_payload || {}, n = k => (p[k] != null && isFinite(+p[k])) ? +p[k] : null, rd = (v, d) => v == null ? null : Math.round(v * d) / d;
+  const cad = n('averageBikingCadenceInRevPerMinute') ?? n('averageRunningCadenceInStepsPerMinute') ?? n('averageSwimCadenceInStrokesPerMinute');
+  const vals = RAWP.map((k, i) => { if (k == null) return rd(cad, 1); const v = n(k); return v == null ? null : (/Effect|Stride|Vertical|Stroke/.test(k) || k === 'trainingStressScore') ? rd(v, 10) : Math.round(v); });
+  return [r.activity_start_at, (r.activity_sport_type || 'o')[0], ...vals];
+}
+async function fetchLive() {
+  const since = new Date(Date.now() - 400 * 864e5).toISOString();
+  const acols = 'id,started_at,sport,sport_subtype,is_race,duration_sec,elapsed_sec,distance_m,elevation_m,avg_power_w,normalized_power_w,avg_pace_sec_km,avg_hr,max_hr,avg_cadence,tss,calories,name,device,hil,rpe,feel,training_phase';
+  const opt = p => rest(p).catch(() => null); // optionale Quellen: fehlt eine, läuft der Rest weiter
+  const [activities, pm, readiness, profile, status, races, block, msgs, rawl, plans, weather] = await Promise.all([
+    rest(`activities?select=${acols}&started_at=gte.${since}&order=started_at.asc&limit=2000`),
+    rest('performance_metrics?select=date,ctl,atl,tsb,daily_tss,ramp_rate,monotony,strain,ctl_swim,ctl_bike,ctl_run&order=date.asc&limit=2000'),
+    rest('readiness?select=date,resting_hr,hrv_score,sleep_hours,readiness_score,readiness_label,body_battery,injury,illness&order=date.desc&limit=400').then(x => x.reverse()),
+    rest('athlete_profile?select=hr_max,hr_rest_bpm,lthr_bike_bpm,lthr_run_bpm,ftp_watts,css_per_100m,weight_kg,weekly_hours_target&limit=1'),
+    rest('athlete_status?select=state,since,until,disciplines,rehab_cases&limit=1'),
+    opt('races?select=name,race_date,location,distance_type,goal_total_sec,actual_total_sec,is_primary_goal&order=race_date.asc'),
+    opt('active_block_goal?select=blockziel,since,until,source_message&limit=1'),
+    opt('coach_messages?select=created_at,message_type,direction,content&order=created_at.desc&limit=10'),
+    opt(`raw_ingestion?select=activity_start_at,activity_sport_type,raw_payload&domain=eq.activity&activity_start_at=gte.${since}&order=activity_start_at.asc&limit=1000`),
+    opt(`planned_workouts?select=id,planned_date,sport,status,adjusted_duration_min,adjusted_intensity_pct,adjustment_reason,completed_activity_id,compliance_score,generated_by&planned_date=gte.${since.slice(0, 10)}&order=planned_date.asc&limit=1000`),
+    opt(`weather_daily?select=date,temp_min_c,temp_max_c,humidity_pct,precip_mm,wind_kmh,condition&date=gte.${new Date(Date.now() - 2 * 864e5).toISOString().slice(0, 10)}&order=date.asc&limit=8`),
+  ]);
+  const st = status[0] || null; let rehab = null;
+  if (st && Array.isArray(st.rehab_cases)) {
+    const cs = st.rehab_cases.find(x => x.case_status === 'active');
+    if (cs) { const mp = { cycling: 'bike', running: 'run', swimming: 'swim', strength: 'strength' }, lv = {};
+      Object.entries(cs.disciplines || {}).forEach(([k, v]) => { const h = (v.level_history || []).slice(-1)[0] || {}; if (mp[k]) lv[mp[k]] = { level: v.current_load_level, since: h.effective_from || null }; });
+      rehab = { case_id: cs.case_id, opened: cs.opened, category: cs.category, levels: lv }; }
+  }
+  const b = block && block[0] ? { blockziel: block[0].blockziel, since: block[0].since, until: block[0].until, text: block[0].source_message } : null;
+  return { activities, pm, readiness, profile: profile[0] || {}, status: st ? { state: st.state, since: st.since, until: st.until, disciplines: st.disciplines } : null, races: races || [], rehab, block: b, msgs: msgs || [], raw: rawl ? rawl.map(rawRowFromLive) : null, plans: plans || [], weather: weather || [], _live: new Date().toISOString() };
+}
+
+/* ---- Normalisieren & Rechnen ---- */
+let D = null;     // normalisierte Daten
+let M = null;     // berechnete Werte
+function normalize(raw) {
+  const prof = raw.profile || {};
+  const acts = (raw.activities || []).map(a => {
+    const lp = localParts(a.started_at);
+    const sport = SPORT_MAP[a.sport] || 'other';
+    return {
+      id: a.id || null, ts: a.started_at, d: lp.date, dn: dn(lp.date), h: lp.h + lp.m / 60, sport,
+      km: a.distance_m != null ? a.distance_m / 1000 : null, sec: a.duration_sec || 0, hr: a.avg_hr || null, hrmax: a.max_hr || null,
+      elev: a.elevation_m != null ? +a.elevation_m : null, name: a.name || '', pace: a.avg_pace_sec_km || null, kcal: a.calories || null, race: !!a.is_race, tss: a.tss != null ? +a.tss : null, pw: a.avg_power_w || null, np: a.normalized_power_w || null
+    };
+  }).filter(a => a.sec > 0).sort((x, y) => x.ts < y.ts ? -1 : 1);
+  const rawRows = (raw.raw || []).map(r => { const o = { t: Date.parse(r[0]) }; RAWC.forEach((k, i) => o[k] = r[i + 2]); return o; });
+  acts.forEach(a => { const t = Date.parse(a.ts); let best = null; for (const r of rawRows) { const d = Math.abs(r.t - t); if (d <= 120000 && (!best || d < best.d)) best = { d, r }; } if (best) { a.rw = best.r; if (!a.pw && best.r.pw) a.pw = best.r.pw; if (!a.np && best.r.np) a.np = best.r.np; } });
+  // Plausibilität: Schwimmdistanz mit unmöglichem Tempo (GPS-Fehler im Freiwasser) zählt nicht
+  acts.forEach(a => { if (a.sport === 'swim' && a.km && a.sec / (a.km * 10) < 40) { a.km = null; a.badDist = true; } });
+  const pm = (raw.pm || []).map(p => ({ date: p.date, dn: dn(p.date), ctl: +p.ctl, atl: +p.atl, tsb: +p.tsb, load: +p.daily_tss || 0, ramp: p.ramp_rate != null ? +p.ramp_rate : null }));
+  const rd = (raw.readiness || []).map(r => ({ date: r.date, dn: dn(r.date), rhr: r.resting_hr, hrv: r.hrv_score, sleep: r.sleep_hours != null ? +r.sleep_hours : null, score: r.readiness_score != null ? +r.readiness_score : null }));
+  return { acts, pm, rd, prof, status: raw.status, races: raw.races || [], rehab: raw.rehab || null, block: raw.block || null, msgs: raw.msgs || [], plans: raw.plans || [], weather: raw.weather || [], live: raw._live || null };
+}
+function compute(D) {
+  const pmLast = D.pm[D.pm.length - 1];
+  const lastAct = D.acts[D.acts.length - 1];
+  const today = Math.max(pmLast ? pmLast.dn : 0, lastAct ? lastAct.dn : 0);
+  const R = { today, todayStr: ds(today) };
+  const pmBy = new Map(D.pm.map(p => [p.dn, p]));
+  R.pmBy = pmBy;
+  R.cur = pmBy.get(today) || pmLast;
+  R.loadOn = n => (pmBy.get(n) ? pmBy.get(n).load : 0);
+  // Belastung: Akut zu chronisch, Monotonie
+  const l7 = []; for (let i = 6; i >= 0; i--) l7.push(R.loadOn(today - i));
+  const prior = []; for (let i = 7; i < 35; i++) prior.push(R.loadOn(today - i));
+  R.acute = sum(l7); R.chronicWk = sum(prior) / 4;
+  R.acwr = R.chronicWk > 0 ? R.acute / R.chronicWk : null;
+  const m7 = mean(l7), sd7 = Math.sqrt(mean(l7.map(x => (x - m7) ** 2)));
+  R.mono = sd7 > 0 ? m7 / sd7 : null;
+  const f7 = pmBy.get(today - 7); R.ctl7ago = f7 ? f7.ctl : null;
+  R.rampCalc = (R.cur && f7) ? R.cur.ctl - f7.ctl : null;
+  const f90 = pmBy.get(today - 90); R.ctl90 = f90 ? f90.ctl : null;
+  // Wochen (Mo–So), abgeschlossene + laufende
+  const cw = monday(today);
+  const firstWk = cw - 52 * 7;
+  R.weeks = [];
+  for (let w = firstWk; w <= cw; w += 7) {
+    const wa = D.acts.filter(a => a.dn >= w && a.dn < w + 7);
+    const bySport = {}; wa.forEach(a => { bySport[a.sport] = (bySport[a.sport] || 0) + a.sec; });
+    const days = new Set(wa.map(a => a.dn));
+    R.weeks.push({ start: w, cur: w === cw, sec: sum(wa.map(a => a.sec)), n: wa.length, days: days.size, km: { run: sum(wa.filter(a => a.sport === 'run').map(a => a.km || 0)), bike: sum(wa.filter(a => a.sport === 'bike').map(a => a.km || 0)), swim: sum(wa.filter(a => a.sport === 'swim').map(a => a.km || 0)) }, bySport, load: sum(Array.from({ length: 7 }, (_, i) => R.loadOn(w + i))), nSport: Object.fromEntries(['run', 'bike', 'swim'].map(s => [s, wa.filter(a => a.sport === s).length])) });
+  }
+  const done = R.weeks.filter(w => !w.cur);
+  R.last4 = done.slice(-4);
+  R.target = R.last4.length ? mean(R.last4.map(w => w.sec)) : 0;
+  // Sprung: abgeschlossene Woche >= 4 h und > 30 % über Schnitt der 4 Wochen davor, nur die jüngste
+  R.jump = null;
+  for (let i = done.length - 1; i >= 4; i--) {
+    const base = mean(done.slice(i - 4, i).map(w => w.sec));
+    if (done[i].sec >= 4 * 3600 && base > 0 && done[i].sec > base * 1.3) { R.jump = { idx: R.weeks.indexOf(done[i]), pct: Math.round((done[i].sec / base - 1) * 100), week: done[i] }; break; }
+  }
+  // Konstanz: Wochen mit >= 3 Einheiten
+  let streak = 0; for (let i = done.length - 1; i >= 0 && done[i].n >= 3; i--) streak++;
+  let best = 0, run = 0; done.forEach(w => { if (w.n >= 3) { run++; best = Math.max(best, run); } else run = 0; });
+  R.streak = streak; R.bestStreak = best; R.hit6 = done.slice(-6).filter(w => w.n >= 3).length;
+  // aktive Tage (365 Tage)
+  const y0 = today - 364;
+  const yAct = D.acts.filter(a => a.dn >= y0);
+  R.yAct = yAct;
+  const dayset = [...new Set(yAct.map(a => a.dn))].sort((a, b) => a - b);
+  R.activeDays = dayset.length;
+  let ds_best = 0, c = 0, prev = -9; dayset.forEach(d => { c = d === prev + 1 ? c + 1 : 1; ds_best = Math.max(ds_best, c); prev = d; });
+  R.dayStreak = ds_best;
+  // Tageswerte (Stunden)
+  R.hoursOn = new Map(); D.acts.forEach(a => R.hoursOn.set(a.dn, (R.hoursOn.get(a.dn) || 0) + a.sec / 3600));
+  // bester Monat (Stunden)
+  const mm = {}; yAct.forEach(a => { const k = a.d.slice(0, 7); mm[k] = (mm[k] || 0) + a.sec / 3600; });
+  const mb = Object.entries(mm).sort((a, b) => b[1] - a[1])[0]; R.bestMonth = mb ? { key: mb[0], h: mb[1] } : null;
+  // Schwellenpulse: Lauf / Rad aus Profil (Labordiagnostik), Schwimmen ohne Pulszonen
+  R.lthr = { run: D.prof.lthr_run_bpm || null, bike: D.prof.lthr_bike_bpm || null };
+  R.rhr = D.prof.hr_rest_bpm || null;
+  // Tage seit letzter Einheit je Sportart
+  R.since = {}; ['run', 'bike', 'swim'].forEach(s => { const l = [...D.acts].reverse().find(a => a.sport === s); R.since[s] = l ? { days: today - l.dn, date: l.d } : null; });
+  // Stunden letzte 12 Wochen je Sportart
+  const w12 = D.acts.filter(a => a.dn > today - 84);
+  R.h12 = {}; w12.forEach(a => { R.h12[a.sport] = (R.h12[a.sport] || 0) + a.sec / 3600; });
+  R.h12tot = sum(Object.values(R.h12));
+  // Summen 12 Monate
+  R.tot = { n: yAct.length, sec: sum(yAct.map(a => a.sec)), km: sum(yAct.map(a => a.km || 0)), elev: sum(yAct.map(a => a.elev || 0)), kcal: sum(yAct.map(a => a.kcal || 0)) };
+  R.sp = {}; yAct.forEach(a => { const o = R.sp[a.sport] || (R.sp[a.sport] = { n: 0, sec: 0, km: 0, elev: 0 }); o.n++; o.sec += a.sec; o.km += a.km || 0; o.elev += a.elev || 0; });
+  return R;
+}
+/* Zeitraum-abhängige Berechnungen */
+function habits(days) {
+  const acts = D.acts.filter(a => a.dn > M.today - days);
+  const grid = Array.from({ length: 7 }, () => Array(24).fill(0));
+  acts.forEach(a => { grid[wdOf(a.dn)][Math.floor(a.h)]++; });
+  let top = { n: 0, wd: 0, h: 0 }; grid.forEach((r, wd) => r.forEach((n, h) => { if (n > top.n) top = { n, wd, h }; }));
+  const early = acts.filter(a => a.h < 9).length;
+  return { grid, top, early, n: acts.length, share: acts.length ? early / acts.length : 0 };
+}
+function records() {
+  const A = M.yAct, out = [];
+  const best = (f, pick) => { let b = null; A.forEach(a => { const v = f(a); if (v != null && (b == null || pick(v, b.v))) b = { v, a }; }); return b; };
+  const gt = (x, y) => x > y, lt = (x, y) => x < y;
+  const lr = best(a => a.sport === 'run' ? a.km : null, gt), lb = best(a => a.sport === 'bike' ? a.km : null, gt), ls = best(a => a.sport === 'swim' ? a.km : null, gt);
+  const lt1 = best(a => a.sec, gt), el = best(a => a.elev, gt), ea = best(a => a.h, lt);
+  let bw = null; M.weeks.filter(w => !w.cur).forEach(w => { if (!bw || w.sec > bw.sec) bw = w; });
+  out.push({ k: 'Längster Lauf', v: lr ? fmt(lr.v, 1) + ' km' : '–', d: lr && lr.a.d });
+  out.push({ k: 'Längste Radfahrt', v: lb ? fmt(lb.v, 1) + ' km' : '–', d: lb && lb.a.d });
+  out.push({ k: 'Längstes Schwimmen', v: ls ? fmt(ls.v * 1000) + ' m' : '–', d: ls && ls.a.d });
+  out.push({ k: 'Längste Einheit', v: lt1 ? dur(lt1.v.valueOf()) + ' h' : '–', d: lt1 && lt1.a.d });
+  out.push({ k: 'Größte Woche', v: bw ? hrs(bw.sec) + ' h' : '–', d: bw && ds(bw.start) });
+  out.push({ k: 'Meiste Höhenmeter', v: el ? fmt(el.v) + ' m' : '–', d: el && el.a.d });
+  out.push({ k: 'Früheste Einheit', v: ea ? `${pad(Math.floor(ea.v))}:${pad(Math.round((ea.v % 1) * 60) % 60)} Uhr` : '–', d: ea && ea.a.d });
+  out.push({ k: 'Längste Tagesserie', v: M.dayStreak + ' Tage', d: null });
+  out.forEach(r => { r.neu = r.d && (M.today - dn(r.d) <= 21); });
+  return out;
+}
+function readinessTrend() {
+  const r = D.rd.filter(x => x.rhr), t = M.today;
+  const a = r.filter(x => x.dn > t - 14).map(x => x.rhr), b = r.filter(x => x.dn <= t - 14 && x.dn > t - 74).map(x => x.rhr);
+  return { recent: median(a), base: median(b), na: a.length, nb: b.length };
+}
+
+/* ---- Engine-Schwellen: KOPIEN, damit die Anzeige zur Rule Engine passt ----
+   Quelle Form:      02_Code/app/domain/training.py::tsb_status  (TSB_FRISCH=+10, TSB_ERMUEDET=-10, TSB_SEHR_ERMUEDET=-25)
+   Quelle Readiness: 02_Code/app/domain/readiness.py::derive_readiness_label (80 / 60 / 40)
+   Bei Änderung dort hier nachziehen, besser: später aus der View lesen. */
+function tsbStatus(t) { if (t == null) return null; return t > 10 ? 'frisch' : t >= -10 ? 'neutral' : t >= -25 ? 'ermüdet' : 'sehr ermüdet'; }
+function readinessLabel(s) { if (s == null) return null; return s >= 80 ? 'optimal' : s >= 60 ? 'gut' : s >= 40 ? 'Vorsicht' : 'Ruhe'; }
+function lastReadiness() { for (let i = D.rd.length - 1; i >= 0; i--) if (D.rd[i].score != null) return D.rd[i]; return null; }
+
+/* ===== Diagramme ===== */
+const ANIM_OK = () => document.documentElement.classList.contains('anim');
+function drawLine(p) {
+  if (!ANIM_OK() || !p.getTotalLength) return;
+  try { const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.getBoundingClientRect(); p.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.2,.9,.25,1)'; requestAnimationFrame(() => { p.style.strokeDashoffset = 0; }); setTimeout(() => { p.style.strokeDasharray = 'none'; }, 1500); } catch (e) { }
+}
+function roundTop(x, y, w, h) { const r = Math.min(5, h, w / 2); return `M${x},${y + h}L${x},${y + r}Q${x},${y} ${x + r},${y}L${x + w - r},${y}Q${x + w},${y} ${x + w},${y + r}L${x + w},${y + h}Z`; }
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+
+function barChart(box, o) {
+  chart(box, (box, w) => {
+    const h = o.h || 240, L = 38, R = 10, T = 26, B = 28, n = o.vals.length;
+    o._lx = null; const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': o.aria || 'Diagramm' }); box.insertBefore(svg, box.firstChild);
+    const mx = niceMax(Math.max(...o.vals, o.hline ? o.hline.v : 0, ...(o.avg || []).filter(v => v != null), 0.0001) * 1.05);
+    const Y = v => T + (h - T - B) * (1 - v / mx), step = (w - L - R) / n, bw = Math.min(24, step * 0.62);
+    for (let i = 0; i <= 4; i++) { const v = mx * i / 4, y = Y(v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: 'rgba(14,13,18,.07)', 'stroke-width': 1 }, svg); svgText(svg, L - 8, y + 4, (o.yfmt || (x => fmt(x, mx < 10 ? 1 : 0)))(v), { 'text-anchor': 'end' }); }
+    o.vals.forEach((v, i) => {
+      const x = L + step * i + (step - bw) / 2, y = Y(v), hh = Math.max(0, h - B - y);
+      const acc = o.accent && o.accent.has(i), dash = i === o.dashed;
+      if (hh > 0 || dash) {
+        const p = el('path', { d: roundTop(x, y, bw, Math.max(hh, 1)), fill: dash ? '#ECE8FE' : (acc ? '#3E12E3' : '#CFCDDA') }, svg);
+        if (dash) { p.setAttribute('stroke', '#3E12E3'); p.setAttribute('stroke-dasharray', '4 3'); p.setAttribute('stroke-width', 1.5); }
+        if (ANIM_OK()) { p.style.transformOrigin = `${x + bw / 2}px ${h - B}px`; p.style.transform = 'scaleY(.01)'; p.style.transition = `transform .8s cubic-bezier(.34,1.26,.5,1) ${i * 14}ms`; requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transform = 'none'; })); }
+      }
+      if (o.labels && o.labels[i] && (x + bw / 2 - (o._lx == null ? -99 : o._lx)) >= 40) { svgText(svg, x + bw / 2, h - 8, o.labels[i], { 'text-anchor': 'middle' }); o._lx = x + bw / 2; }
+      const hit = el('rect', { x: L + step * i, y: T, width: step, height: h - T - B, fill: 'transparent' }, svg);
+      hit.addEventListener('pointermove', e => { const t = o.tip(i); showTip(e, t.date, t.rows); }); hit.addEventListener('pointerleave', hideTip);
+    });
+    if (o.avg) { const pts = o.avg.map((v, i) => v == null ? null : [L + step * i + step / 2, Y(v)]).filter(Boolean); if (pts.length > 1) el('path', { d: 'M' + pts.map(p => p.join(',')).join('L'), fill: 'none', stroke: '#0E0D12', 'stroke-width': 1.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); }
+    if (o.hline) { const y = Y(o.hline.v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: '#3E12E3', 'stroke-width': 1.2, 'stroke-dasharray': o.hline.dash ? '5 4' : 'none' }, svg); svgText(svg, o.hline.left ? L + 6 : w - R, y - 6, o.hline.label, { 'text-anchor': o.hline.left ? 'start' : 'end', fill: '#2E0BB0', 'font-weight': 600 }); }
+    if (o.topLabel) { const i = o.topLabel.i, x = L + step * i + step / 2; svgText(svg, x, Y(o.vals[i]) - 8, o.topLabel.text, { 'text-anchor': 'middle', fill: '#2E0BB0', 'font-weight': 700 }); }
+    srTable(box, o.aria || 'Diagramm', ['Zeitraum', 'Wert'], o.vals.map((v, i) => { const t = o.tip(i); return [t.date, t.rows.map(r => r.v).join(' · ')]; }));
+  });
+}
+
+function lineSimple(box, o) {
+  chart(box, (box, w) => {
+    const h = o.h || 240, L = 38, R = 14, T = 20, B = 28, n = o.ys.length;
+    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': o.aria }); box.insertBefore(svg, box.firstChild);
+    const lo0 = Math.min(...o.ys, o.vline ? Infinity : Infinity), hi0 = Math.max(...o.ys), mx = niceMax(hi0 * 1.1), mn = 0;
+    const Y = v => T + (h - T - B) * (1 - (v - mn) / (mx - mn)), X = i => L + (w - L - R) * i / Math.max(1, n - 1);
+    for (let i = 0; i <= 4; i++) { const v = mn + (mx - mn) * i / 4, y = Y(v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: 'rgba(14,13,18,.07)' }, svg); svgText(svg, L - 8, y + 4, fmt(v, 0), { 'text-anchor': 'end' }); }
+    const defs = el('defs', {}, svg), g = el('linearGradient', { id: 'lg' + o.id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#3E12E3', 'stop-opacity': .16 }, g); el('stop', { offset: 1, 'stop-color': '#3E12E3', 'stop-opacity': 0 }, g);
+    const d = o.ys.map((v, i) => `${i ? 'L' : 'M'}${X(i)},${Y(v)}`).join('');
+    el('path', { d: d + `L${X(n - 1)},${h - B}L${X(0)},${h - B}Z`, fill: `url(#lg${o.id})` }, svg);
+    const p = el('path', { d, fill: 'none', stroke: '#3E12E3', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); drawLine(p);
+    if (o.vline != null) { const x = X(o.vline.i); el('line', { x1: x, x2: x, y1: T, y2: h - B, stroke: '#3E12E3', 'stroke-width': 1.2, 'stroke-dasharray': '4 4' }, svg); svgText(svg, x + 6, T + 10, o.vline.label, { fill: '#2E0BB0', 'font-weight': 600 }); el('circle', { cx: x, cy: Y(o.ys[o.vline.i]), r: 5, fill: '#fff', stroke: '#3E12E3', 'stroke-width': 2 }, svg); }
+    el('circle', { cx: X(n - 1), cy: Y(o.ys[n - 1]), r: 5.5, fill: '#3E12E3', stroke: '#fff', 'stroke-width': 2 }, svg);
+    svgText(svg, X(n - 1) - 8, Y(o.ys[n - 1]) - 12, fmt(o.ys[n - 1], 1), { 'text-anchor': 'end', fill: '#0E0D12', 'font-weight': 700, 'font-size': 13 });
+    let last = -999; o.xl.forEach((t, i) => { if (t && X(i) - last > 38) { svgText(svg, X(i), h - 8, t, { 'text-anchor': 'middle' }); last = X(i); } });
+    const hit = el('rect', { x: L, y: T, width: w - L - R, height: h - T - B, fill: 'transparent' }, svg);
+    hit.addEventListener('pointermove', e => { const r = hit.getBoundingClientRect(); const i = Math.max(0, Math.min(n - 1, Math.round((e.clientX - r.left) / r.width * (n - 1)))); showTip(e, o.dates[i], [{ c: '#3E12E3', v: fmt(o.ys[i], 1), n: o.name }]); });
+    hit.addEventListener('pointerleave', hideTip);
+    srTable(box, o.aria, ['Datum', o.name], o.ys.map((v, i) => [o.dates[i], fmt(v, 1)]));
+  });
+}
+
+function formChart(box, days) {
+  chart(box, (box, w) => {
+    const data = D.pm.filter(p => p.dn > M.today - days && p.dn <= M.today), n = data.length;
+    if (n < 2) { box.innerHTML = '<p class="empty">Für diesen Zeitraum liegen keine Belastungswerte vor.</p>'; return; }
+    const H = 400, L = 40, R = 88, T = 16, split = 262, F0 = 296, F1 = 372;
+    const svg = el('svg', { viewBox: `0 0 ${w} ${H}`, role: 'img', 'aria-label': 'Fitness, Ermüdung und Form im Zeitverlauf' }); box.insertBefore(svg, box.firstChild);
+    const mx = niceMax(Math.max(...data.map(p => Math.max(p.ctl, p.atl))) * 1.08);
+    const Y = v => T + (split - T) * (1 - v / mx), X = i => L + (w - L - R) * i / (n - 1);
+    for (let i = 0; i <= 4; i++) { const v = mx * i / 4, y = Y(v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: 'rgba(14,13,18,.07)' }, svg); svgText(svg, L - 8, y + 4, fmt(v, 0), { 'text-anchor': 'end' }); }
+    const defs = el('defs', {}, svg), g = el('linearGradient', { id: 'fg', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#3E12E3', 'stop-opacity': .16 }, g); el('stop', { offset: 1, 'stop-color': '#3E12E3', 'stop-opacity': 0 }, g);
+    const line = k => data.map((p, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(p[k]).toFixed(1)}`).join('');
+    el('path', { d: line('ctl') + `L${X(n - 1)},${split}L${X(0)},${split}Z`, fill: 'url(#fg)' }, svg);
+    el('path', { d: line('atl'), fill: 'none', stroke: 'rgba(110,109,120,.55)', 'stroke-width': 1.5, 'stroke-linejoin': 'round' }, svg);
+    const pc = el('path', { d: line('ctl'), fill: 'none', stroke: '#3E12E3', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); drawLine(pc);
+    // Form
+    const fm = Math.max(10, ...data.map(p => Math.abs(p.tsb))), fz = (F0 + F1) / 2, FY = v => fz - (v / fm) * (F1 - F0) / 2;
+    el('line', { x1: L, x2: w - R, y1: fz, y2: fz, stroke: 'rgba(14,13,18,.18)' }, svg);
+    svgText(svg, L - 8, fz + 4, '0', { 'text-anchor': 'end' }); svgText(svg, L, F0 - 8, 'Form (Fitness − Ermüdung)', { fill: '#6E6D78' });
+    const bw = Math.max(1, Math.min(24, (w - L - R) / n * 0.7));
+    data.forEach((p, i) => { const y = FY(p.tsb), top = Math.min(y, fz), hh = Math.abs(y - fz); if (hh > 0.3) el('rect', { x: X(i) - bw / 2, y: top, width: bw, height: hh, fill: p.tsb >= 0 ? '#8C74F2' : '#CFCDDA', rx: Math.min(2, bw / 2) }, svg); });
+    // Monate
+    let lastMon = -999;
+    data.forEach((p, i) => { if (p.date.endsWith('-01') && X(i) - lastMon > 38) { svgText(svg, X(i), H - 12, MON[+p.date.slice(5, 7) - 1], { 'text-anchor': 'middle' }); el('line', { x1: X(i), x2: X(i), y1: F1 + 4, y2: F1 + 9, stroke: 'rgba(14,13,18,.2)' }, svg); lastMon = X(i); } });
+    // Rennen
+    D.races.forEach(r => { const d = dn(r.race_date), i = data.findIndex(p => p.dn === d); if (i >= 0) { el('line', { x1: X(i), x2: X(i), y1: T, y2: F1, stroke: 'rgba(14,13,18,.25)' }, svg); el('circle', { cx: X(i), cy: T + 4, r: 4, fill: '#fff', stroke: '#3E12E3', 'stroke-width': 2 }, svg); svgText(svg, X(i) + 7, T + 8, r.name, { fill: '#2E0BB0' }); } });
+    // Endbeschriftung
+    const last = data[n - 1]; let yc = Y(last.ctl), ya = Y(last.atl); if (Math.abs(yc - ya) < 15) { if (ya < yc) { ya -= 8; yc += 8; } else { ya += 8; yc -= 8; } }
+    svgText(svg, w - R + 8, yc + 4, 'Fitness ' + fmt(last.ctl, 1), { fill: '#2E0BB0', 'font-weight': 700 });
+    svgText(svg, w - R + 8, ya + 4, 'Ermüdung ' + fmt(last.atl, 1), { fill: '#55545F', 'font-weight': 600 });
+    svgText(svg, w - R + 8, FY(last.tsb) + 4, 'Form ' + sgn(last.tsb, 1), { fill: '#0E0D12', 'font-weight': 700 });
+    // Fadenkreuz
+    const cross = el('line', { x1: 0, x2: 0, y1: T, y2: F1, stroke: '#0E0D12', 'stroke-opacity': .35, 'stroke-width': 1, visibility: 'hidden' }, svg);
+    const hit = el('rect', { x: L, y: T, width: w - L - R, height: F1 - T, fill: 'transparent' }, svg);
+    hit.addEventListener('pointermove', e => {
+      const r = hit.getBoundingClientRect(), i = Math.max(0, Math.min(n - 1, Math.round((e.clientX - r.left) / r.width * (n - 1)))), p = data[i];
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('visibility', 'visible');
+      showTip(e, dLong(p.date), [{ c: '#3E12E3', v: fmt(p.ctl, 1), n: 'Fitness' }, { c: '#8E8D99', v: fmt(p.atl, 1), n: 'Ermüdung' }, { c: '#8C74F2', v: sgn(p.tsb, 1), n: 'Form' }, { v: fmt(p.load, 0), n: 'Tageslast' }]);
+    });
+    hit.addEventListener('pointerleave', () => { hideTip(); cross.setAttribute('visibility', 'hidden'); });
+    srTable(box, 'Fitness, Ermüdung, Form', ['Datum', 'Fitness', 'Ermüdung', 'Form', 'Tageslast'], data.map(p => [p.date, fmt(p.ctl, 1), fmt(p.atl, 1), sgn(p.tsb, 1), fmt(p.load, 0)]));
+  });
+}
+
+/* Readiness: nur Tage mit Wert, Bandgrenzen der Engine (40 / 60 / 80) */
+function readinessChart(box, days) {
+  chart(box, (box, w) => {
+    const pts = D.rd.filter(r => r.score != null && r.dn > M.today - days);
+    if (pts.length < 2) { box.innerHTML = '<p class="empty">Für diesen Zeitraum gibt es weniger als zwei Readiness-Werte.</p>'; return; }
+    days = Math.max(14, Math.min(days, M.today - Math.min(...pts.map(r => r.dn)) + 1));
+    const h = 260, L = 38, R = 84, T = 16, B = 30, x0 = M.today - days + 1;
+    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': 'Readiness-Score im Zeitverlauf' }); box.insertBefore(svg, box.firstChild);
+    const X = d => L + (w - L - R) * (d - x0) / Math.max(1, days - 1), Y = v => T + (h - T - B) * (1 - v / 100);
+    [[0, ''], [40, 'Ruhe | Vorsicht'], [60, 'Vorsicht | gut'], [80, 'gut | optimal'], [100, '']].forEach(([v]) => { el('line', { x1: L, x2: w - R, y1: Y(v), y2: Y(v), stroke: 'rgba(14,13,18,.07)' }, svg); svgText(svg, L - 8, Y(v) + 4, String(v), { 'text-anchor': 'end' }); });
+    [['optimal', 90], ['gut', 70], ['Vorsicht', 50], ['Ruhe', 20]].forEach(([t, v]) => svgText(svg, w - R + 24, Y(v) + 4, t, { fill: '#6E6D78' }));
+    const d = pts.map((p, i) => `${i ? 'L' : 'M'}${X(p.dn).toFixed(1)},${Y(p.score).toFixed(1)}`).join('');
+    const line = el('path', { d, fill: 'none', stroke: '#3E12E3', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); drawLine(line);
+    pts.forEach((p, i) => { const last = i === pts.length - 1, c = el('circle', { cx: X(p.dn), cy: Y(p.score), r: last ? 6 : 4, fill: last ? '#3E12E3' : '#fff', stroke: '#3E12E3', 'stroke-width': 2 }, svg);
+      c.addEventListener('pointermove', e => showTip(e, dLong(p.date), [{ c: '#3E12E3', v: String(p.score), n: readinessLabel(p.score) }, { v: p.rhr != null ? p.rhr + ' bpm' : '–', n: 'Ruhepuls' }])); c.addEventListener('pointerleave', hideTip); });
+    const last = pts[pts.length - 1]; svgText(svg, X(last.dn), Y(last.score) - 12, String(last.score), { 'text-anchor': 'middle', fill: '#0E0D12', 'font-weight': 700, 'font-size': 13 });
+    let lm = -999; for (let n = x0; n <= M.today; n++) { if (ds(n).endsWith('-01') && X(n) - lm > 38) { svgText(svg, X(n), h - 8, MON[+ds(n).slice(5, 7) - 1], { 'text-anchor': 'middle' }); lm = X(n); } }
+    srTable(box, 'Readiness-Score', ['Datum', 'Score', 'Ruhepuls'], pts.map(p => [p.date, p.score, p.rhr != null ? p.rhr : '–']));
+  });
+}
+
+/* Skyline: Jahr als 3D-Stadt */
+function skyline(box, mode, opt = {}) {
+  box.textContent = '';
+  const cw = monday(M.today), first = monday(M.today - 364), nW = (cw - first) / 7 + 1;
+  const val = n => mode === 'l' ? M.loadOn(n) : (M.hoursOn.get(n) || 0);
+  let mxV = 0, mxN = null; for (let d = first; d <= M.today; d++) { const v = val(d); if (v > mxV) { mxV = v; mxN = d; } }
+  const P = (u, v, h) => [8.2 * u + 5.0 * v, -1.8 * u + 3.1 * v - h];
+  const cols = [];
+  for (let d = first; d <= M.today; d++) {
+    const u = (d - first - wdOf(d)) / 7 + (0), uu = Math.floor((monday(d) - first) / 7), v = 6 - wdOf(d);
+    cols.push({ d, u: uu, v, val: val(d), act: M.hoursOn.has(d) });
+  }
+  cols.sort((a, b) => (a.v - 0.61 * a.u) - (b.v - 0.61 * b.u));
+  let minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+  const grow = (x, y) => { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); };
+  const svg = el('svg', { role: 'img', 'aria-label': 'Dein Jahr als Stadt: Höhe je Tag nach ' + (mode === 'l' ? 'Belastung' : 'Stunden') }); box.appendChild(svg);
+  const pts = (arr) => arr.map(p => p.map(x => +x.toFixed(2)).join(',')).join(' ');
+  cols.forEach(c => {
+    const u0 = c.u + .17, u1 = c.u + .83, v0 = c.v + .17, v1 = c.v + .83;
+    const g = el('g', {}, svg); g.style.setProperty('--w', c.u);
+    if (ANIM_OK()) { g.style.opacity = 0; g.style.transition = `opacity .5s ${Math.min(c.u * 18, 900)}ms, transform .9s cubic-bezier(.34,1.26,.5,1) ${Math.min(c.u * 18, 900)}ms`; g.style.transform = 'translateY(8px)'; requestAnimationFrame(() => requestAnimationFrame(() => { g.style.opacity = 1; g.style.transform = 'none'; })); }
+    const isMax = c.d === mxN && mxV > 0;
+    if (c.val <= 0) {
+      const top = [P(u0, v0, 0), P(u1, v0, 0), P(u1, v1, 0), P(u0, v1, 0)];
+      el('polygon', { points: pts(top), fill: '#fff', 'fill-opacity': c.act ? .2 : .085 }, g); top.forEach(p => grow(...p));
+    } else {
+      const h = Math.max(2.5, c.val / mxV * 132);
+      const top = [P(u0, v0, h), P(u1, v0, h), P(u1, v1, h), P(u0, v1, h)];
+      const left = [P(u0, v0, 0), P(u0, v1, 0), P(u0, v1, h), P(u0, v0, h)];
+      const front = [P(u0, v1, 0), P(u1, v1, 0), P(u1, v1, h), P(u0, v1, h)];
+      el('polygon', { points: pts(left), fill: isMax ? '#BDE23C' : '#B7A6FA' }, g);
+      el('polygon', { points: pts(front), fill: isMax ? '#9BC226' : '#7C5FF4' }, g);
+      el('polygon', { points: pts(top), fill: isMax ? '#D8FF4F' : '#FFFFFF' }, g);
+      [...top, ...left, ...front].forEach(p => grow(...p));
+    }
+    const lbl = c.d;
+    g.addEventListener('pointermove', e => showTip(e, dLong(ds(lbl)), [{ v: fmt(M.hoursOn.get(lbl) || 0, 1) + ' h', n: 'Training' }, { v: fmt(M.loadOn(lbl), 0), n: 'Belastung' }]));
+    g.addEventListener('pointerleave', hideTip);
+  });
+  // Monatsnamen an der Vorderkante
+  const seen = new Set();
+  for (let d = first; d <= M.today; d++) { const s = ds(d); if (s.endsWith('-01') || (d === first && +s.slice(8) <= 10)) { const u = Math.floor((monday(d) - first) / 7); const k = s.slice(0, 7); if (seen.has(k)) continue; seen.add(k); const [x, y] = P(u + .5, 7.4, 0); svgText(svg, x, y + 6, MON[+s.slice(5, 7) - 1], { 'text-anchor': 'middle', fill: 'rgba(255,255,255,.7)', 'font-size': 6.6 }); grow(x, y + 8); } }
+  // Spitzenwert mit Linie
+  if (mxN != null) {
+    const u = Math.floor((monday(mxN) - first) / 7), v = 6 - wdOf(mxN), [x, y] = P(u + .5, v + .5, 132);
+    el('line', { x1: x, y1: y, x2: x + 16, y2: y - 10, stroke: '#D8FF4F', 'stroke-width': .5 }, svg);
+    const t = svgText(svg, x + 18, y - 11, (mode === 'l' ? fmt(mxV, 0) + ' Punkte' : fmt(mxV, 1) + ' h'), { fill: '#fff', 'font-size': 8, 'font-weight': 700 });
+    svgText(svg, x + 18, y - 3, dShort(ds(mxN)), { fill: 'rgba(255,255,255,.75)', 'font-size': 6.4 }); grow(x + 60, y - 14);
+  }
+  const pad8 = 4; svg.setAttribute('viewBox', `${minX - pad8} ${minY - pad8} ${maxX - minX + 2 * pad8} ${maxY - minY + 2 * pad8}`);
+  svg.style.width = '100%'; svg.style.height = 'auto'; svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  return { mxV, mxN };
+}
+
+/* Verlauf je Einheit: Punkte + gleitender Median (5 Einheiten). o: pts [{dn,d,v,n}], fmtV, flip (kleiner = besser, oben), unit, name, aria */
+function trendChart(box, o) {
+  chart(box, (box, w) => {
+    const pts = o.pts; const h = o.h || 220, L = 46, R = 14, T = 14, B = 28;
+    if (pts.length < 3) { box.innerHTML = '<p class="empty">Zu wenige Einheiten mit Werten im gewählten Zeitraum.</p>'; return; }
+    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': o.aria }); box.insertBefore(svg, box.firstChild);
+    const vs = pts.map(p => p.v), lo0 = Math.min(...vs), hi0 = Math.max(...vs), pad = (hi0 - lo0) * 0.12 || 1, lo = lo0 - pad, hi = hi0 + pad;
+    const x0 = M.today - o.days + 1, X = d => L + (w - L - R) * (d - x0) / Math.max(1, o.days - 1);
+    const Y = v => T + (h - T - B) * (o.flip ? (v - lo) / (hi - lo) : 1 - (v - lo) / (hi - lo));
+    for (let i = 0; i <= 3; i++) { const v = lo + (hi - lo) * i / 3, y = Y(v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: 'rgba(14,13,18,.07)' }, svg); svgText(svg, L - 8, y + 4, o.fmtAxis ? o.fmtAxis(v) : fmt(v, 0), { 'text-anchor': 'end' }); }
+    const med = pts.map((p, i) => ({ dn: p.dn, v: median(pts.slice(Math.max(0, i - 4), i + 1).map(q => q.v)) }));
+    pts.forEach(p => el('circle', { cx: X(p.dn), cy: Y(p.v), r: 3.2, fill: '#8C74F2', 'fill-opacity': .55 }, svg));
+    const d = med.map((p, i) => `${i ? 'L' : 'M'}${X(p.dn)},${Y(p.v)}`).join('');
+    const path = el('path', { d, fill: 'none', stroke: '#3E12E3', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); drawLine(path);
+    let last = -999, cur = new Date(); const lp = localParts(Date.now());
+    for (let k = 0; k <= o.days; k++) { const dd = x0 + k; const dt = new Date(dd * 86400000); if (dt.getUTCDate() === 1) { const x = X(dd); if (x - last > 40 && x > L && x < w - R) { svgText(svg, x, h - 8, MON[dt.getUTCMonth()], { 'text-anchor': 'middle' }); last = x; } } }
+    const mark = el('circle', { r: 5, fill: '#fff', stroke: '#3E12E3', 'stroke-width': 2, opacity: 0 }, svg);
+    const hit = el('rect', { x: L, y: T, width: w - L - R, height: h - T - B, fill: 'transparent' }, svg);
+    hit.addEventListener('pointermove', e => { const r = hit.getBoundingClientRect(), dd = x0 + (e.clientX - r.left) / r.width * (o.days - 1); let bi = 0; pts.forEach((p, i) => { if (Math.abs(p.dn - dd) < Math.abs(pts[bi].dn - dd)) bi = i; }); const p = pts[bi]; mark.setAttribute('cx', X(p.dn)); mark.setAttribute('cy', Y(p.v)); mark.setAttribute('opacity', 1); showTip(e, dShort(p.d) + (p.n ? ' · ' + p.n : ''), [{ c: '#3E12E3', v: o.fmtV(p.v), n: o.name }]); });
+    hit.addEventListener('pointerleave', () => { mark.setAttribute('opacity', 0); hideTip(); });
+    srTable(box, o.aria, ['Datum', o.name], pts.map(p => [dShort(p.d), o.fmtV(p.v)]));
+  });
+}
+
+/* Mehrere Verläufe untereinander mit gemeinsamer Zeitachse. o: rows [{dn,d,n,v:{key:wert}}], series [{k,name,fmtV,fmtAxis,flip,color}], days */
+function multiTrend(box, o) {
+  chart(box, (box, w) => {
+    const ser = o.series.filter(s => o.rows.filter(r => r.v[s.k] != null).length >= 2);
+    if (!ser.length) { box.innerHTML = '<p class="empty">Zu wenige Einheiten mit Werten im gewählten Zeitraum.</p>'; return; }
+    const PH = 96, GAP = 26, L = 46, R = 12, T = 8, B = 22, h = T + ser.length * PH + (ser.length - 1) * GAP + B;
+    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img', 'aria-label': o.aria }); box.insertBefore(svg, box.firstChild);
+    const x0 = M.today - o.days + 1, X = d => L + (w - L - R) * (d - x0) / Math.max(1, o.days - 1);
+    const marks = [], panels = [];
+    ser.forEach((s, si) => {
+      const top = T + si * (PH + GAP), pts = o.rows.filter(r => r.v[s.k] != null).map(r => ({ dn: r.dn, v: r.v[s.k] }));
+      const vs = pts.map(p => p.v), lo0 = Math.min(...vs), hi0 = Math.max(...vs), pad = (hi0 - lo0) * 0.12 || 1, lo = lo0 - pad, hi = hi0 + pad;
+      const Y = v => top + PH * (s.flip ? (v - lo) / (hi - lo) : 1 - (v - lo) / (hi - lo));
+      panels.push({ s, Y });
+      svgText(svg, L, top - 1, s.name, { fill: '#0E0D12', 'font-weight': 600, 'font-size': 12 });
+      for (let i = 0; i <= 2; i++) { const v = lo + (hi - lo) * i / 2, y = Y(v); el('line', { x1: L, x2: w - R, y1: y, y2: y, stroke: 'rgba(14,13,18,.07)' }, svg); svgText(svg, L - 8, y + 4, s.fmtAxis ? s.fmtAxis(v) : fmt(v, 0), { 'text-anchor': 'end' }); }
+      pts.forEach(p => el('circle', { cx: X(p.dn), cy: Y(p.v), r: 3, fill: s.color || '#8C74F2', 'fill-opacity': .5 }, svg));
+      const med = pts.map((p, i) => ({ dn: p.dn, v: median(pts.slice(Math.max(0, i - 4), i + 1).map(q => q.v)) }));
+      const path = el('path', { d: med.map((p, i) => `${i ? 'L' : 'M'}${X(p.dn)},${Y(p.v)}`).join(''), fill: 'none', stroke: s.color || '#3E12E3', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg); drawLine(path);
+      marks.push(el('circle', { r: 5, fill: '#fff', stroke: s.color || '#3E12E3', 'stroke-width': 2, opacity: 0 }, svg));
+    });
+    let last = -999; for (let k = 0; k <= o.days; k++) { const dd = x0 + k, dt = new Date(dd * 86400000); if (dt.getUTCDate() === 1) { const x = X(dd); if (x - last > 40 && x > L && x < w - R) { svgText(svg, x, h - 6, MON[dt.getUTCMonth()], { 'text-anchor': 'middle' }); last = x; } } }
+    const hit = el('rect', { x: L, y: T, width: w - L - R, height: h - T - B, fill: 'transparent' }, svg);
+    hit.addEventListener('pointermove', e => {
+      const r = hit.getBoundingClientRect(), dd = x0 + (e.clientX - r.left) / r.width * (o.days - 1); let bi = 0; o.rows.forEach((p, i) => { if (Math.abs(p.dn - dd) < Math.abs(o.rows[bi].dn - dd)) bi = i; });
+      const row = o.rows[bi], tr = [];
+      panels.forEach((p, i) => { const v = row.v[p.s.k]; if (v != null) { marks[i].setAttribute('cx', X(row.dn)); marks[i].setAttribute('cy', p.Y(v)); marks[i].setAttribute('opacity', 1); tr.push({ c: p.s.color || '#3E12E3', v: p.s.fmtV(v), n: p.s.name }); } else marks[i].setAttribute('opacity', 0); });
+      showTip(e, dShort(row.d) + (row.n ? ' · ' + row.n : ''), tr);
+    });
+    hit.addEventListener('pointerleave', () => { marks.forEach(m => m.setAttribute('opacity', 0)); hideTip(); });
+    srTable(box, o.aria, ['Datum', ...ser.map(s => s.name)], o.rows.map(r => [dShort(r.d), ...ser.map(s => r.v[s.k] != null ? s.fmtV(r.v[s.k]) : '–')]));
+  });
+}
+
+/* ===== Seite v2: Zahlen statt Urteile. Befund und Coach-Text kommen später von Tobi. ===== */
+let PERIOD = 365, SKY = 'h';
+const SECTIONS = [
+  { id: 'heute', t: 'Heute', i: 'home' }, { id: 'kalender', t: 'Kalender', i: 'cal' }, { id: 'einheit', t: 'Aktuelle Einheit', i: 'bolt' }, { id: 'leistung', t: 'Leistungsentwicklung', i: 'gauge' }, { id: 'ueberblick', t: 'Überblick', i: 'layers' }, { id: 'daten', t: 'Daten', i: 'db' }
+];
+const r1 = x => Math.round(x * 10) / 10;
+const realToday = () => dn(localParts(Date.now()).date);
+const daysAgo = n => n <= 0 ? 'heute' : n === 1 ? 'gestern' : `vor ${n} Tagen`;
+const LVL = { bike: 'Rad', run: 'Lauf', swim: 'Schwimmen', strength: 'Kraft' };
+const MSGTYPE = { weather_advice: 'Wetter-Hinweis', morning_checkin: 'Morgen-Check', post_workout: 'Nach dem Training', sunday_checkin: 'Sonntags-Check', weekly_review: 'Wochen-Review', race_briefing: 'Rennbriefing', status_report: 'Statusbericht' };
+
+function greeting() { const h = +localParts(Date.now()).h; return h < 11 ? 'Guten Morgen' : h < 18 ? 'Hallo' : 'Guten Abend'; }
+function secHead(t, sub) { return `<div class="sec-h"><h2>${t}</h2>${sub ? `<span>${sub}</span>` : ''}</div>`; }
+
+/* ---- Segment-Regler ---- */
+function mkSeg(host, opts, value, onChange, acc) {
+  host.textContent = ''; host.classList.add('seg'); if (acc) host.classList.add('on-acc');
+  const th = document.createElement('i'); th.className = 'thumb'; host.appendChild(th); const bs = [];
+  opts.forEach(o => { const b = document.createElement('button'); b.type = 'button'; b.textContent = o.l; b.dataset.v = o.v; b.addEventListener('click', () => { set(o.v); onChange(o.v); }); host.appendChild(b); bs.push(b); });
+  function place() { const b = bs.find(x => x.getAttribute('aria-pressed') === 'true'); if (!b || !b.offsetWidth) return; th.style.width = b.offsetWidth + 'px'; th.style.transform = `translateX(${b.offsetLeft - 3}px)`; th.style.left = '3px'; }
+  function set(v) { bs.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === String(v)))); place(); }
+  set(value); new ResizeObserver(place).observe(host); host.set = set; return host;
+}
+
+/* ---- Kennzahlen: nur Fakten, kein Urteil ---- */
+function kennzahlen() {
+  const out = [], cur = M.cur, d90 = M.ctl90 != null ? cur.ctl - M.ctl90 : null;
+  out.push({ t: 'Fitness gegenüber vor 90 Tagen', i: 'chart', val: d90 == null ? '–' : sgn(d90, 1), s: d90 == null ? 'Zu wenig Verlauf für einen Vergleich.' : `Die Fitness (CTL) liegt bei ${fmt(cur.ctl, 1)}, vor 90 Tagen waren es ${fmt(M.ctl90, 1)}.`, ev: 'performance_metrics', to: 'form' });
+  out.push({ t: 'Last: 7 Tage gegen Wochenschnitt', i: 'bolt', val: M.acwr == null ? '–' : fmt(M.acwr, 2), s: M.acwr == null ? 'Nicht genug Vorgeschichte.' : `${fmt(M.acute, 0)} Punkte in den letzten 7 Tagen, der Wochenschnitt der 28 Tage davor liegt bei ${fmt(M.chronicWk, 0)}.`, ev: 'im Dashboard berechnet, nicht aus der Engine', to: 'form' });
+  const sh = s => M.h12tot ? Math.round((M.h12[s] || 0) / M.h12tot * 100) : 0;
+  out.push({ t: 'Verteilung der Disziplinen', i: 'layers', val: sh('bike') + ' % Rad', s: `Rad ${sh('bike')} %, Lauf ${sh('run')} %, Schwimmen ${sh('swim')} % der Stunden in den letzten 12 Wochen.`, ev: `${fmt(M.h12tot, 1)} h in 84 Tagen`, to: 'umfang' });
+  out.push({ t: 'Wochen mit mindestens 3 Einheiten', i: 'cal', val: `${M.hit6} von 6`, s: `Aktuelle Serie ${M.streak} Wochen, längste ${M.bestStreak}. Gezählt werden abgeschlossene Wochen Mo–So.`, ev: 'activities', to: 'umfang' });
+  const H = habits(PERIOD);
+  out.push({ t: 'Startzeit', i: 'clock', val: fmt(H.share * 100, 0) + ' %', s: H.n ? `${fmt(H.share * 100, 0)} % der Einheiten starten vor 9 Uhr. Häufigster Termin: ${WDL[H.top.wd]}, ${pad(H.top.h)} Uhr.` : 'Keine Einheiten im Zeitraum.', ev: `${H.n} Einheiten im gewählten Zeitraum`, to: 'daten' });
+  const RT = readinessTrend();
+  out.push({ t: 'Ruhepuls zuletzt', i: 'heart', val: RT.recent != null ? fmt(RT.recent, 0) + ' bpm' : '–', s: RT.recent != null && RT.base != null ? `Median der letzten 14 Tage ${fmt(RT.recent, 0)} bpm, in den 60 Tagen davor ${fmt(RT.base, 0)} bpm.` : 'Zu wenige Ruhepulswerte für einen Vergleich.', ev: `${RT.na} und ${RT.nb} Messtage`, to: 'erholung' });
+  return out;
+}
+
+/* ---- Abgleich Reha-Level gegen Einheiten (nur Zählung, keine Bewertung) ---- */
+function rehabCheck() {
+  const R = D.rehab; if (!R) return [];
+  return Object.entries(R.levels).map(([sp, o]) => {
+    const since = o.since ? dn(o.since) : null, acts = D.acts.filter(a => a.sport === sp && (since == null || a.dn >= since));
+    const last = acts.length ? acts[acts.length - 1].d : null;
+    return { sp, level: o.level, since: o.since, n: acts.length, last };
+  });
+}
+
+function buildPage() {
+  const cur = M.cur, thisWk = M.weeks[M.weeks.length - 1], lastAny = D.acts[D.acts.length - 1], kz = kennzahlen(), st = tsbStatus(cur.tsb), rd = lastReadiness();
+  window.KZ = kz; const SEC = {};
+  const chips = [`<span class="chip white">${ic('bolt')}Form ${esc(st)}</span>`];
+  if (rd) chips.push(`<span class="chip white">${ic('heart')}Readiness ${rd.score} · ${esc(readinessLabel(rd.score))}</span>`);
+  chips.push(`<span class="chip white">${ic('clock')}Letzte Einheit ${daysAgo(M.today - lastAny.dn)}</span>`);
+  SEC.heute = (`<section id="heute" class="sec" style="margin-top:2px">
+   <div class="pghead rv"><h2>${greeting()}, ${esc(NAME)}<span class="p">.</span></h2><p>${esc(heroSentence())}</p></div>
+   <div class="mini" id="heuteTiles"></div>
+   <div class="grid" style="margin-top:14px"><div class="card c12 rv" id="morningCard"></div><div class="card c12 rv" id="chatCard"></div></div></section>`);
+  SEC.year = (`<section id="year" class="sec" style="margin-top:6px"><div class="grid">
+   <div class="card year wide rv"><span class="streak"></span>
+    <div class="top1"><span>Dein Jahr · 12 Monate</span><span id="skySeg"></span></div>
+    <div class="big" id="yearBig"></div><div class="three" id="yearThree"></div><div class="sky" id="sky"></div></div>
+  </div></section>`);
+  SEC.rehab = (`<section id="rehab" class="sec" style="margin-top:6px"><div class="grid"><div class="card c12 rv" id="rehabCard"></div></div></section>`);
+  // Kennzahlen
+  SEC.kennzahlen = (`<section id="kennzahlen" class="sec">${secHead('Kennzahlen', 'Reine Zahlen aus deinen Daten, ohne Einordnung')}<div class="grid">
+   ${kz.map((x, i) => `<button class="card ins rv" data-to="${x.to}" style="--i:${i}"><div class="top2"><span class="ico">${ic(x.i)}</span><span class="val">${esc(x.val)}</span></div><h4>${esc(x.t)}</h4><p>${esc(x.s)}</p><div class="ev"><span>${esc(x.ev)}</span>${ic('arrow')}</div></button>`).join('')}
+  </div></section>`);
+  // Form
+  SEC.form = (`<section id="form" class="sec">${secHead('Form und Belastung', 'Fitness, Ermüdung und Form aus eurer Performance Engine')}<div class="grid">
+   <div class="card c8 rv"><div class="chead"><div><div class="ct">Fitness, Ermüdung, Form</div><div class="cs">Fitness = 42-Tage-, Ermüdung = 7-Tage-Mittel der Tageslast · Form = Fitness − Ermüdung</div></div></div>
+    <div class="legend"><span><i style="background:#3E12E3"></i>Fitness</span><span><i style="background:rgba(110,109,120,.55)"></i>Ermüdung</span><span><i style="background:#8C74F2"></i>Form über 0</span><span><i style="background:#CFCDDA"></i>Form unter 0</span></div>
+    <div class="chartbox" id="formChart"></div></div>
+   <div class="card c4 rv"><div class="chead"><div><div class="ct">Belastung</div><div class="cs">Letzte 7 Tage</div></div></div>
+    <div class="facts"><div class="surf"><span>Rampe</span><b>${cur.ramp != null ? sgn(cur.ramp, 1) : '–'}</b><em>Fitness in 7 Tagen (Engine)</em></div><div class="surf"><span>Last</span><b>${fmt(M.acute, 0)}</b><em>Punkte in 7 Tagen</em></div><div class="surf"><span>Wochenschnitt</span><b>${fmt(M.chronicWk, 0)}</b><em>28 Tage davor</em></div><div class="surf"><span>Monotonie</span><b>${M.mono != null ? fmt(M.mono, 1) : '–'}</b><em>7 Tage, im Dashboard berechnet</em></div></div>
+    <p class="foot">Form-Einordnung wie in der Rule Engine: über +10 frisch, bis −10 neutral, bis −25 ermüdet, darunter sehr ermüdet. Das Verhältnis 7 zu 28 Tage (${M.acwr != null ? fmt(M.acwr, 2) : '–'}) ist in der Forschung umstritten und keine Engine-Größe.</p></div>
+  </div></section>`);
+  // Erholung
+  SEC.erholung = (`<section id="erholung" class="sec">${secHead('Erholung', 'Readiness-Score und Ruhepuls aus readiness')}<div class="grid">
+   <div class="card c8 rv"><div class="chead"><div><div class="ct">Readiness-Score</div><div class="cs">Nur Tage mit Wert · Bänder wie in der Engine: 40, 60, 80</div></div></div><div class="chartbox" id="readyChart"></div></div>
+   <div class="card c4 rv"><div class="ct" style="margin-bottom:6px">Letzte Werte</div><div class="cs">aus readiness, Median in Tagen</div><div class="kv" id="rdKv" style="margin-top:14px"></div></div>
+  </div></section>`);
+  // Umfang
+  SEC.umfang = (`<section id="umfang" class="sec">${secHead('Umfang und Konstanz', 'Wochen laufen Montag bis Sonntag')}<div class="grid">
+   <div class="card c8 rv"><div class="chead"><div><div class="ct">Wochenumfang</div><div class="cs">Trainingsstunden aller Sportarten · schwarze Linie: Schnitt der 4 Wochen davor</div></div></div><div class="chartbox" id="weekChart"></div><p class="foot" id="weekFoot"></p></div>
+   <div class="card c4 rv"><div class="ct" style="margin-bottom:14px">Konstanz</div>
+    <div class="facts"><div class="surf"><span>Serie</span><b>${M.streak}</b><em>Wochen mit 3+ Einheiten</em></div><div class="surf"><span>Längste Serie</span><b>${M.bestStreak}</b><em>Wochen in Folge</em></div><div class="surf"><span>Letzte 6 Wochen</span><b>${M.hit6} von 6</b><em>mit 3+ Einheiten</em></div><div class="surf"><span>Aktive Tage</span><b>${M.activeDays}</b><em>in 12 Monaten</em></div></div></div>
+   <div class="card c12 rv"><div class="chead"><div><div class="ct">Dein Jahr, Tag für Tag</div><div class="cs">Ein Kästchen je Tag, Farbe nach Trainingsstunden</div></div></div>
+    <div class="calrow"><div class="cal" id="cal"></div><div class="cal3"><div><b>${M.activeDays}</b><span>aktive Tage</span></div><div><b>${M.dayStreak}</b><span>längste Serie in Tagen</span></div><div><b>${M.bestMonth ? MON[+M.bestMonth.key.slice(5) - 1] + ' ' + M.bestMonth.key.slice(0, 4) : '–'}</b><span>bester Monat${M.bestMonth ? ' · ' + fmt(M.bestMonth.h, 1) + ' h' : ''}</span></div></div></div>
+    <div class="lg">weniger <i style="background:#EEEDF3"></i><i style="background:#DCD5FC"></i><i style="background:#B8A9F8"></i><i style="background:#8C74F2"></i><i style="background:#6242EA"></i><i style="background:#3E12E3"></i> mehr</div></div>
+  </div></section>`);
+  // Profil und Block
+  const pr = D.prof, B = D.block;
+  SEC.profil = (`<section id="profil" class="sec">${secHead('Profil und Block', 'aus athlete_profile und active_block_goal')}<div class="grid">
+   <div class="card c5 rv"><div class="ct" style="margin-bottom:14px">Schwellen und Profil</div>
+    <div class="kv">${[['Radschwelle (FTP)', pr.ftp_watts ? pr.ftp_watts + ' W' : '–'], ['Schwellenpuls Lauf', pr.lthr_run_bpm ? pr.lthr_run_bpm + ' bpm' : '–'], ['Schwellenpuls Rad', pr.lthr_bike_bpm ? pr.lthr_bike_bpm + ' bpm' : '–'], ['Schwimmschwelle (CSS)', pr.css_per_100m ? Math.floor(pr.css_per_100m / 60) + ':' + pad(pr.css_per_100m % 60) + ' /100 m' : '–'], ['Maximalpuls', pr.hr_max ? pr.hr_max + ' bpm' : '–'], ['Ruhepuls', pr.hr_rest_bpm ? pr.hr_rest_bpm + ' bpm' : '–']].map(r => `<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
+    <p class="foot">Profilwerte, keine Berechnung. Ein neuer Schwellenwert entsteht nach eurer Regel nur über Erkennung, Tobi-Vorschlag und deine Entscheidung.</p></div>
+   <div class="card c7 rv"><div class="ct" style="margin-bottom:6px">Aktueller Block</div>${B ? `<div class="cs">${esc(B.blockziel.replace(/_/g, ' '))} · ${dLong(B.since)} bis ${dLong(B.until)}</div><p style="margin-top:14px;color:var(--ink2)">${esc(B.text || '')}</p>` : '<p class="empty">Kein aktives Blockziel eingetragen.</p>'}
+    <div style="margin-top:14px" class="chip">${D.races.length ? D.races.length + ' Rennen eingetragen' : 'kein Wettkampf in der Tabelle races'}</div></div>
+  </div></section>`);
+  // Rekorde
+  const rec = records();
+  SEC.rekorde = (`<section id="rekorde" class="sec">${secHead('Rekorde', 'aus den letzten 12 Monaten')}<div class="grid"><div class="card c12 rv"><div class="rec">${rec.map(r => `<div class="surf">${r.neu ? '<span class="chip acc new">Neu</span>' : ''}<span>${esc(r.k)}</span><b>${esc(r.v)}</b><em>${r.d ? dLong(r.d) : ' '}</em></div>`).join('')}</div></div></div></section>`);
+  // Daten
+  const nTss = D.acts.filter(a => a.tss != null).length, nHr = D.acts.filter(a => a.hr).length, nRdScore = D.rd.filter(r => r.score != null).length;
+  SEC.daten = (`<section id="daten" class="sec">${secHead('Daten und Logbuch')}<div class="grid">
+   <div class="card c4 rv"><div class="ct" style="margin-bottom:6px">Diese Woche</div><div class="cs">Ist, Montag bis Sonntag</div><div class="week" id="weekRows" style="margin-top:10px"></div></div>
+   <div class="card c4 rv"><div class="ct" style="margin-bottom:6px">Sportarten</div><div class="cs">Stunden im gewählten Zeitraum</div><div id="spBars"></div></div>
+   <div class="card c4 rv"><div class="ct" style="margin-bottom:14px">Daten und Annahmen</div><div class="kv">${[
+      ['Quelle', 'TriCoach · Supabase'], ['Stand', D.live ? 'Live · ' + new Date(D.live).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr' : 'Schnappschuss ' + dLong(SNAP_DATE)], ['Zeitraum', dLong(D.acts[0].d) + ' bis ' + dLong(M.todayStr)],
+      ['Last und Form', 'performance_metrics (Engine)'], ['TSS je Einheit', nTss + ' von ' + D.acts.length + ' gefüllt'], ['Leistung und Zonen', D.acts.filter(a => a.rw).length + ' von ' + D.acts.length + ' Einheiten aus raw_ingestion'], ['Readiness-Score', nRdScore + ' Tage mit Wert'], ['HRV und Schlaf', 'Felder leer'], ['Wochenplan', 'weekly_schedule nicht lesbar (RLS ohne Regel)'], ['Schwimmen', 'GPS-Ausreißer ausgeschlossen']].map(r => `<div><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join('')}</div></div>
+   <div class="card c12 rv"><div class="chead"><div><div class="ct">Logbuch</div><div class="cs" id="logSub"></div></div></div><div class="filters" id="logF"></div><div class="twrap"><table class="log" id="logT"></table></div><button class="more" id="logMore" type="button"></button></div>
+  </div></section>`);
+  const pg = (id, inner) => `<div class="pg" id="pg-${id}" hidden>${inner}</div>`;
+  $('#page').innerHTML = pg('heute', SEC.heute) + pg('kalender', calendarPage()) + pg('einheit', einheitPage()) + pg('leistung', perfPage()) + pg('ueberblick', SEC.year + SEC.kennzahlen + SEC.form + SEC.erholung + SEC.umfang) + pg('daten', SEC.rehab + SEC.profil + SEC.rekorde + SEC.daten);
+}
+
+/* ---- Kleine Kacheln ---- */
+const tile = (l, v, s, cls = '', edge = '') => `<div class="mt rv ${cls}"${edge ? ` style="box-shadow:inset 4px 0 0 ${edge},var(--shadow)"` : ''}><span>${esc(l)}</span><b>${v}</b>${s ? `<em>${esc(s)}</em>` : ''}</div>`;
+const mmss = s => { let m = Math.floor(s / 60), r = Math.round(s % 60); if (r === 60) { m++; r = 0; } return m + ':' + pad(r); };
+const swimPace = a => (a.km && a.sec >= 300) ? a.sec / (a.km * 10) : null;
+const hrOk = a => (a.hr && a.hr >= 60 && a.hr <= 210) ? a.hr : null;
+const SPORT_FMT = { bike: 'Rad', run: 'Lauf', swim: 'Schwimmen', strength: 'Kraft', hike: 'Wandern', brick: 'Koppel', other: 'Sonstiges' };
+
+/* ---- Heute ---- */
+function fillHeute() {
+  const c = M.cur, rd = lastReadiness(), s = D.status, B = D.block, pr = D.prof, la = D.acts[D.acts.length - 1];
+  const stT = { injured: 'verletzt', healthy: 'gesund', ill: 'krank' };
+  const lastMain = !la ? '–' : la.pw ? `${la.pw} W` : (la.sport === 'run' && la.pace) ? mmss(la.pace) + ' /km' : la.sport === 'swim' && swimPace(la) ? mmss(swimPace(la)) + ' /100 m' : dur(la.sec) + ' h';
+  const M2 = planModel(), t0 = realToday(); let nxt = null;
+  for (let k = 0; k < 7 && !nxt; k++) { const pl = (M2.by.get(t0 + k) || []).filter(x => x.kind === 'plan'); if (pl.length) nxt = { k, pl }; }
+  const w = (D.weather || []).find(x => x.date === ds(t0)) || (D.weather || [])[0];
+  const items = []; for (let k = 0; k < 7 && items.length < 5; k++) (M2.by.get(t0 + k) || []).filter(x => x.kind === 'plan').forEach(x => items.length < 5 && items.push({ k, x }));
+  const dl = k => k === 0 ? 'Heute' : k === 1 ? 'Morgen' : dShort(ds(t0 + k));
+  const planTile = `<div class="mt tall rv"><span>Geplant</span>${items.length ? items.map(({ k, x }) => `<div class="pi" style="--c:${STATE[x.st].c}"><i></i><div><em>${dl(k)}</em><b>${esc(SPORT_FMT[x.sp] || x.sp)}${x.pm ? ` <small>${Math.round(x.pm)} min</small>` : ''}</b><em>${STATE[x.st].l}</em></div></div>`).join('') : '<em style="margin-top:8px">Tobi hat noch nichts geplant.</em>'}</div>`;
+  const T = [
+    planTile,
+    tile('Form heute', bigHtml(c.tsb, 1), tsbStatus(c.tsb), 'o-form'),
+    tile('Readiness', rd ? String(rd.score) : '–', rd ? readinessLabel(rd.score) + ' · ' + dShort(rd.date) : 'kein Wert', 'o-ready'),
+    tile('Block', B ? esc(B.blockziel.replace(/_/g, ' ')) : '–', B ? 'bis ' + dShort(B.until) : (D.races.length ? D.races[0].name : 'kein Zielrennen'), 'o-block'),
+    tile('Fitness · Ermüdung', `${fmt(c.ctl, 1)} · ${fmt(c.atl, 1)}`, 'Stand ' + dShort(c.date), 'o-fit'),
+    tile('Ruhepuls', rd && rd.rhr != null ? rd.rhr + ' bpm' : '–', rd ? dShort(rd.date) : '', 'o-rhr'),
+    tile('Status', s ? (stT[s.state] || s.state) : '–', s && s.since ? 'seit ' + dShort(s.since) : '', 'o-status'),
+    tile('Letzte Einheit', esc(la ? SPORT_FMT[la.sport] : '–'), la ? lastMain + ' · ' + daysAgo(realToday() - la.dn) : '', 'o-last'),
+    w ? tile('Wetter', `${w.temp_min_c != null ? Math.round(w.temp_min_c) : '–'}–${w.temp_max_c != null ? Math.round(w.temp_max_c) : '–'} <small>°C</small>`, [w.condition, w.precip_mm ? fmt(w.precip_mm, 1) + ' mm' : '', w.humidity_pct != null ? Math.round(w.humidity_pct) + ' %' : ''].filter(Boolean).join(' · '), 'o-wx') : tile('Wetter', '–', 'Anbindung folgt', 'o-wx'),
+    tile('Schwellen', `${pr.ftp_watts || '–'} W`, `LTHR ${pr.lthr_run_bpm || '–'} / ${pr.lthr_bike_bpm || '–'} · HFmax ${pr.hr_max || '–'}`, 'o-th')
+  ];
+  $('#heuteTiles').innerHTML = T.join('');
+}
+
+/* ---- Plan und Kalender ---- */
+const PSPORT = { cycling: 'bike', running: 'run', swimming: 'swim', strength: 'strength', strength_training: 'strength', brick: 'brick', hiking: 'hike' };
+const STATE = { done: { l: 'absolviert', c: '#2E9E5B' }, partial: { l: 'teilweise', c: '#F08C00' }, skipped: { l: 'ausgelassen', c: '#E03131' }, extra: { l: 'nicht im Plan', c: '#F2C200' }, planned: { l: 'geplant', c: '#3E12E3' }, neutral: { l: 'Einheit', c: '#8A8995' } };
+const STMAP = { completed: 'done', done: 'done', absolviert: 'done', partial: 'partial', partially_completed: 'partial', teilweise: 'partial', skipped: 'skipped', missed: 'skipped', ausgelassen: 'skipped' };
+function planModel() {
+  const t0 = realToday(), plans = (D.plans || []).map(p => ({ p, dn: dn(p.planned_date), sp: PSPORT[p.sport] || p.sport })), by = new Map(), used = new Set();
+  const cover = plans.length ? [Math.min(...plans.map(x => x.dn)), Math.max(...plans.map(x => x.dn))] : null;
+  const push = (d, it) => { if (!by.has(d)) by.set(d, []); by.get(d).push(it); };
+  plans.forEach(({ p, dn: d, sp }) => {
+    const acts = D.acts.filter(a => a.dn === d && !used.has(a) && (a.sport === sp || (sp === 'brick' && (a.sport === 'bike' || a.sport === 'run'))));
+    acts.forEach(a => used.add(a));
+    const pm = p.adjusted_duration_min || null, am = sum(acts.map(a => a.sec)) / 60, ratio = pm ? am / pm : null;
+    let st = STMAP[String(p.status || '').toLowerCase()];
+    if (!st) st = acts.length ? (ratio == null || ratio >= 0.8 ? 'done' : ratio >= 0.3 ? 'partial' : 'skipped') : (d < t0 ? 'skipped' : 'planned');
+    push(d, { kind: 'plan', st, sp, pm, am: acts.length ? am : null, p, acts, name: acts[0] ? acts[0].name : '' });
+  });
+  D.acts.forEach(a => { if (used.has(a)) return; const inCover = cover && a.dn >= cover[0] && a.dn <= cover[1]; push(a.dn, { kind: 'extra', st: inCover ? 'extra' : 'neutral', sp: a.sport, pm: null, am: a.sec / 60, p: null, acts: [a], name: a.name }); });
+  return { by, cover, hasPlans: plans.length > 0 };
+}
+const itemHtml = it => {
+  const s = STATE[it.st], t = [`${SPORT_FMT[it.sp] || it.sp}`];
+  const dur = it.pm ? `${Math.round(it.pm)} min geplant` : '';
+  const act = it.am != null ? `${Math.round(it.am)} min absolviert` : '';
+  const sub = [dur, act].filter(Boolean).join(' · ');
+  const extra = it.p && it.p.adjustment_reason ? `<em>${esc(it.p.adjustment_reason)}</em>` : '';
+  return `<div class="ci" style="--c:${s.c}"><i></i><div><b>${esc(t[0])}${it.p && it.p.adjusted_intensity_pct ? ' · ' + it.p.adjusted_intensity_pct + ' %' : ''}</b><span>${esc(s.l)}${sub ? ' · ' + sub : ''}${it.name ? ' · ' + esc(it.name) : ''}</span>${extra}</div></div>`;
+};
+let CAL = { mode: 'week', a: null, sel: null };
+function calendarPage() {
+  return `<section id="kalender" class="sec" style="margin-top:2px"><div class="calbar rv"><div class="rng" id="calMode"></div><div class="calnav"><button type="button" class="iconbtn" id="calPrev" aria-label="Zurück">‹</button><b id="calLabel"></b><button type="button" class="iconbtn" id="calNext" aria-label="Weiter">›</button><button type="button" class="more" id="calToday" style="margin:0 0 0 6px">Heute</button></div></div>
+   <div class="callegend" id="calLegend"></div><div id="calBody"></div><div id="calDay" class="card rv" style="margin-top:14px"></div><p class="foot" id="calNote" style="margin-top:14px"></p></section>`;
+}
+function fillKalender() {
+  const t0 = realToday(); if (CAL.a == null) { CAL.a = t0; CAL.sel = t0; }
+  const M2 = planModel(), wk = d => d - ((new Date(d * 864e5).getUTCDay() + 6) % 7);
+  mkSeg($('#calMode'), [{ v: 'week', l: 'Woche' }, { v: 'month', l: 'Monat' }], CAL.mode, v => { CAL.mode = v; fillKalender(); }, false);
+  $('#calLegend').innerHTML = ['done', 'partial', 'skipped', 'extra', 'planned'].map(k => `<span><i style="background:${STATE[k].c}"></i>${STATE[k].l}</span>`).join('') + (M2.hasPlans ? '' : `<span><i style="background:${STATE.neutral.c}"></i>ohne Plan</span>`);
+  const dayItems = d => M2.by.get(d) || [];
+  const dayHtml = d => { const it = dayItems(d); return it.length ? it.map(itemHtml).join('') : '<p class="empty" style="margin:0">Keine Einheit.</p>'; };
+  const dow = d => (new Date(d * 864e5).getUTCDay() + 6) % 7, WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+  const dots = d => dayItems(d).map(it => `<i style="background:${STATE[it.st].c}" title="${esc(SPORT_FMT[it.sp] || '')}"></i>`).join('');
+  let body = '';
+  if (CAL.mode === 'week') {
+    const s = wk(CAL.a), e = s + 6, dt = n => new Date(n * 864e5);
+    $('#calLabel').textContent = `${dShort(ds(s))} – ${dShort(ds(e))}`;
+    body = `<div class="weeklist">${Array.from({ length: 7 }, (_, i) => s + i).map(d => `<div class="wd card${d === t0 ? ' today' : ''}"><div class="wdh"><b>${WD[dow(d)]}</b><span>${dt(d).getUTCDate()}.</span></div><div class="wdb">${dayHtml(d)}</div></div>`).join('')}</div>`;
+    const all = Array.from({ length: 7 }, (_, i) => dayItems(s + i)).flat(), pl = all.filter(x => x.kind === 'plan');
+    body += pl.length ? `<p class="foot">Woche: ${pl.filter(x => x.st === 'done').length} von ${pl.length} geplanten Einheiten absolviert, ${pl.filter(x => x.st === 'partial').length} teilweise, ${pl.filter(x => x.st === 'skipped').length} ausgelassen.</p>` : '';
+    $('#calDay').style.display = 'none';
+  } else {
+    const first = new Date(CAL.a * 864e5), y = first.getUTCFullYear(), m = first.getUTCMonth(), m1 = Math.round(Date.UTC(y, m, 1) / 864e5), mEnd = Math.round(Date.UTC(y, m + 1, 0) / 864e5), s = wk(m1);
+    $('#calLabel').textContent = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][m] + ' ' + y;
+    let cells = ''; for (let d = s; d <= wk(mEnd) + 6; d++) { const inM = d >= m1 && d <= mEnd; cells += `<button type="button" class="mc${inM ? '' : ' out'}${d === t0 ? ' today' : ''}${d === CAL.sel ? ' sel' : ''}" data-d="${d}"><span>${new Date(d * 864e5).getUTCDate()}</span><div class="dots">${dots(d)}</div></button>`; }
+    body = `<div class="card monthcard"><div class="mh">${WD.map(w => `<span>${w}</span>`).join('')}</div><div class="mg">${cells}</div></div>`;
+    $('#calDay').style.display = '';
+    $('#calDay').innerHTML = `<div class="ct" style="margin-bottom:8px">${dLong(ds(CAL.sel))}</div>${dayHtml(CAL.sel)}`;
+  }
+  $('#calBody').innerHTML = body;
+  $$('#calBody .mc').forEach(b => b.onclick = () => { CAL.sel = +b.dataset.d; fillKalender(); });
+  const step = v => { if (CAL.mode === 'week') CAL.a += 7 * v; else { const d = new Date(CAL.a * 864e5); CAL.a = Math.round(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + v, 1) / 864e5); CAL.sel = CAL.a; } fillKalender(); };
+  $('#calPrev').onclick = () => step(-1); $('#calNext').onclick = () => step(1); $('#calToday').onclick = () => { CAL.a = t0; CAL.sel = t0; fillKalender(); };
+  $('#calNote').textContent = M2.hasPlans ? 'Farben: Status aus planned_workouts, sonst abgeleitet aus Garmin-Einheiten am selben Tag und in derselben Sportart (ab 80 % der geplanten Dauer absolviert, ab 30 % teilweise, darunter ausgelassen). Einheiten ohne Planeintrag im Planzeitraum sind gelb.' : 'In der Datenbank liegen noch keine Planeinheiten (planned_workouts ist leer). Deshalb sind alle Garmin-Einheiten grau. Sobald Tobi Einheiten schreibt, erscheinen sie hier farbig.';
+  $$('#pg-kalender .rv').forEach(c => c.classList.add('in'));
+}
+
+/* ---- Aktuelle Einheit ---- */
+let EIN = { i: null };
+function einList() { return D.acts.map((a, i) => ({ a, i })).filter(x => ['bike', 'run', 'swim', 'strength', 'hike'].includes(x.a.sport)).slice(-24).reverse(); }
+function einheitPage() {
+  return `<section id="einheit" class="sec" style="margin-top:2px"><div class="selrow rv"><label for="einSel">Einheit</label><select id="einSel" class="sel"></select></div>
+   <div id="einHead" class="einhead rv"></div><div class="mini" id="einTiles"></div>
+   <div class="grid" style="margin-top:14px" id="einGrid"></div></section>`;
+}
+function refMedian(a, get) {
+  const lim = a.dn - 90, v = D.acts.filter(x => x !== a && x.sport === a.sport && x.dn >= lim && x.dn <= a.dn).map(get).filter(x => x != null && isFinite(x));
+  return v.length >= 3 ? { m: median(v), n: v.length } : null;
+}
+function fillEinheit() {
+  const L = einList(); if (!L.length) { $('#einHead').innerHTML = '<p class="empty">Keine Einheiten vorhanden.</p>'; return; }
+  const sel = $('#einSel'); if (EIN.i == null || !L.some(x => x.i === EIN.i)) EIN.i = L[0].i;
+  sel.innerHTML = L.map(x => `<option value="${x.i}">${dShort(x.a.d)} · ${SPORT_FMT[x.a.sport]} · ${dur(x.a.sec)} h</option>`).join(''); sel.value = EIN.i;
+  sel.onchange = () => { EIN.i = +sel.value; fillEinheit(); };
+  const a = D.acts[EIN.i], rw = a.rw || {}, sp = a.sport;
+  $('#einHead').innerHTML = `<div><div class="cs">${dLong(a.d)} · ${SPORT_FMT[sp]}</div><h3>${esc(a.name || SPORT_FMT[sp])}</h3></div>`;
+  const defs = [];
+  const add = (l, get, f, unit, hideZero) => { const v = get(a); if (v == null || !isFinite(v) || (hideZero && v === 0)) return; const r = refMedian(a, get); defs.push(tile(l, f(v) + (unit ? `<small>${unit}</small>` : ''), r ? `Ø 90 Tage: ${f(r.m)}${unit ? ' ' + unit : ''}` : '')); };
+  add('Dauer', x => x.sec / 60, v => dur(v * 60), 'h');
+  if (sp !== 'strength') add('Distanz', x => x.km, v => fmt(v, sp === 'swim' ? 2 : 1), 'km');
+  if (sp === 'run') add('Pace', x => x.pace && x.pace >= 150 && x.pace <= 600 ? x.pace : null, v => mmss(v), '/km');
+  if (sp === 'swim') add('Pace', swimPace, v => mmss(v), '/100 m');
+  if (sp === 'bike') add('Ø Leistung', x => x.pw, v => Math.round(v), 'W');
+  if (sp === 'run') add('Ø Leistung (Garmin-Summary)', x => x.pw, v => Math.round(v), 'W');
+  if (sp === 'bike') add('Normalisiert (NP)', x => x.np, v => Math.round(v), 'W');
+  add('Ø Herzfrequenz', hrOk, v => Math.round(v), 'bpm');
+  add('Max. Herzfrequenz', x => x.hrmax, v => Math.round(v), 'bpm');
+  add('Kadenz', x => x.rw && x.rw.cad, v => Math.round(v), sp === 'bike' ? 'U/min' : sp === 'swim' ? 'Züge/min' : 'Schritte/min');
+  if (sp === 'run') { add('Schrittlänge', x => x.rw && x.rw.stride, v => Math.round(v), 'cm'); add('Bodenkontakt', x => x.rw && x.rw.gct, v => Math.round(v), 'ms'); add('Vertikale Bewegung', x => x.rw && x.rw.vo, v => fmt(v, 1), 'cm'); }
+  if (sp === 'swim') { add('SWOLF', x => x.rw && x.rw.swolf, v => Math.round(v), ''); add('Zuglänge', x => x.rw && x.rw.sdist, v => fmt(v, 2), 'm', true); }
+  add('Garmin-Last', x => x.rw && x.rw.load, v => Math.round(v), '', true);
+  if (rw.ate != null) defs.push(tile('Trainingseffekt', `${fmt(rw.ate, 1)} <small>/ ${fmt(rw.ante || 0, 1)}</small>`, 'aerob / anaerob (Garmin)'));
+  if (rw.tss != null && sp === 'bike') defs.push(tile('TSS (Garmin)', fmt(rw.tss, 0), ''));
+  $('#einTiles').innerHTML = defs.join('');
+  const G = [], hz = ['h1', 'h2', 'h3', 'h4', 'h5'].map(k => rw[k]), pz = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'].map(k => rw[k]);
+  const zrows = (vals, pre) => { const tot = sum(vals.map(v => v || 0)); if (!tot) return '<p class="empty">Keine Zonenzeit gespeichert.</p>'; return `<div class="zones">${vals.map((v, i) => { const s = v || 0; return `<div class="zr"><span>${pre}${i + 1}</span><i><u style="width:${(s / tot * 100).toFixed(1)}%"></u></i><b>${Math.round(s / 60)} min</b><em>${fmt(s / tot * 100, 0)} %</em></div>`; }).join('')}</div>`; };
+  G.push(`<div class="card c6 rv"><div class="ct" style="margin-bottom:4px">Zeit in Herzfrequenzzonen</div><div class="cs" style="margin-bottom:12px">Zonen der Garmin-Einstellung</div>${zrows(hz, 'Z')}</div>`);
+  if ((sp === 'bike' || sp === 'run') && pz.some(v => v)) G.push(`<div class="card c6 rv"><div class="ct" style="margin-bottom:4px">Zeit in Leistungszonen</div><div class="cs" style="margin-bottom:12px">Zonen der Garmin-Einstellung</div>${zrows(pz, 'Z')}</div>`);
+  if (sp === 'bike' && rw.b5 != null) {
+    const bests = k => Math.max(...D.acts.filter(x => x.rw && x.rw[k]).map(x => x.rw[k]));
+    const rows = [['5 min', 'b5'], ['10 min', 'b10'], ['20 min', 'b20'], ['60 min', 'b60']].filter(([, k]) => rw[k] != null).map(([l, k]) => { const b = bests(k); return `<div class="zr w"><span>${l}</span><i><u style="width:${(rw[k] / b * 100).toFixed(1)}%"></u></i><b>${rw[k]} W</b><em>${fmt(rw[k] / b * 100, 0)} %</em></div>`; }).join('');
+    G.push(`<div class="card c6 rv"><div class="ct" style="margin-bottom:4px">Leistungskurve dieser Fahrt</div><div class="cs" style="margin-bottom:12px">Beste Durchschnittsleistung je Dauer, Anteil am Bestwert der letzten 12 Monate</div><div class="zones">${rows}</div></div>`);
+  }
+  const same = D.acts.filter(x => x.sport === sp && x.sec >= 300 || x === a).slice(-8).reverse();
+  const mainOf = x => sp === 'run' ? (x.pace ? mmss(x.pace) + ' /km' : '–') : sp === 'swim' ? (swimPace(x) ? mmss(swimPace(x)) + ' /100 m' : '–') : x.pw ? x.pw + ' W' : '–';
+  G.push(`<div class="card c6 rv"><div class="ct" style="margin-bottom:10px">Letzte ${SPORT_FMT[sp]}-Einheiten</div><div class="lr h"><span>Datum</span><span>Dauer</span><span>${sp === 'bike' ? 'Ø Watt' : 'Pace'}</span><span>Ø HF</span></div>${same.map(x => `<div class="lr${x === a ? ' on' : ''}"><span>${dShort(x.d)}</span><span>${dur(x.sec)}</span><span>${mainOf(x)}</span><span>${hrOk(x) ? Math.round(x.hr) : '–'}</span></div>`).join('')}</div>`);
+  G.push(`<div class="card c12 rv"><div class="ct" style="margin-bottom:6px">Verlauf innerhalb der Einheit</div><p class="cs" style="line-height:1.5">Puls und Watt (bzw. Pace) über die Zeit sind hier nicht möglich: In der Datenbank liegen nur Garmin-Zusammenfassungen je Einheit, keine Sekunden- oder Rundenwerte. Dafür müsste das Backend die Aktivitäts-Streams speichern.</p></div>`);
+  $('#einGrid').innerHTML = G.join('');
+  $$('#pg-einheit .rv').forEach(c => c.classList.add('in'));
+}
+
+/* ---- Leistungsentwicklung ---- */
+function perfRows() {
+  const row = (a, v) => ({ dn: a.dn, d: a.d, n: a.name, v });
+  const bike = D.acts.filter(a => a.sport === 'bike' && a.sec >= 1200).map(a => row(a, { pw: a.pw || null, hr: hrOk(a), b20: a.rw && a.rw.b20 || null }));
+  const run = D.acts.filter(a => a.sport === 'run' && a.sec >= 600).map(a => row(a, { pace: a.pace && a.pace >= 150 && a.pace <= 600 ? a.pace : null, hr: hrOk(a), pw: a.pw || null }));
+  const swim = D.acts.filter(a => a.sport === 'swim' && a.sec >= 600).map(a => { const p = swimPace(a); return row(a, { pace: p && p >= 50 && p <= 300 ? p : null, hr: hrOk(a) }); });
+  return { bike, run, swim };
+}
+const PS_DEF = {
+  bike: [{ k: 'pw', name: 'Ø Leistung (W)', fmtV: v => Math.round(v) + ' W', color: '#3E12E3' }, { k: 'hr', name: 'Ø Herzfrequenz (bpm)', fmtV: v => Math.round(v) + ' bpm', color: '#D6336C' }, { k: 'b20', name: 'Beste 20 min (W)', fmtV: v => Math.round(v) + ' W', color: '#0F8B8D' }],
+  run: [{ k: 'pace', name: 'Pace (min/km)', fmtV: v => mmss(v) + ' /km', fmtAxis: mmss, flip: true, color: '#3E12E3' }, { k: 'hr', name: 'Ø Herzfrequenz (bpm)', fmtV: v => Math.round(v) + ' bpm', color: '#D6336C' }, { k: 'pw', name: 'Ø Leistung (W, Garmin-Summary)', fmtV: v => Math.round(v) + ' W', color: '#0F8B8D' }],
+  swim: [{ k: 'pace', name: 'Pace (min/100 m)', fmtV: v => mmss(v) + ' /100 m', fmtAxis: mmss, flip: true, color: '#3E12E3' }, { k: 'hr', name: 'Ø Herzfrequenz (bpm)', fmtV: v => Math.round(v) + ' bpm', color: '#D6336C' }]
+};
+function perfPage() {
+  const pr = D.prof, mk = (id, t, s) => `<section id="${id}" class="sec" style="margin-top:${id === 'pf-rad' ? 2 : 34}px">${secHead(t, s)}<div class="mini" id="${id}-t"></div><div class="grid" style="margin-top:14px"><div class="card c12 rv"><div class="chartbox" id="${id}-c"></div></div></div></section>`;
+  return mk('pf-rad', 'Rad', 'Leistung, Herzfrequenz und Bestleistung') + mk('pf-lauf', 'Laufen', 'Pace, Herzfrequenz und Leistung') + mk('pf-schwimmen', 'Schwimmen', 'Pace und Herzfrequenz') +
+    `<p class="foot" style="margin-top:18px">Jeder Punkt ist eine Einheit, die Linie der gleitende Median der letzten 5 Einheiten. Rad unter 20 min und Lauf oder Schwimmen unter 10 min sind ausgeblendet. Bestleistung 20 min ist keine FTP, ein neuer FTP-Wert entsteht nach eurer Regel nur über Erkennung, Tobi-Vorschlag und deine Entscheidung. Schwimm-Pace aus Distanz und Gesamtdauer, daher inklusive Pausen. Die Laufleistung stammt aus der Garmin-Zusammenfassung und liegt laut euren Notizen etwa 1,3 bis 1,6-fach über den echten Stryd-Werten, sie zeigt den Verlauf, nicht den Absolutwert.</p>`;
+}
+function fillPerf() {
+  const pr = D.prof;
+  const R = perfRows(), days = Math.max(PERIOD, 91), lim = M.today - 89, lim2 = M.today - 179;
+  const sub = (rows, s) => {
+    const cur = rows.filter(r => r.dn >= lim && r.v[s.k] != null).map(r => r.v[s.k]), prev = rows.filter(r => r.dn < lim && r.dn >= lim2 && r.v[s.k] != null).map(r => r.v[s.k]);
+    if (!cur.length) return tile(s.name.replace(/ \(.*\)/, ''), '–', 'keine Werte in 90 Tagen');
+    return tile(s.name.replace(/ \(.*\)/, '') + ' · 90 Tage', s.fmtV(median(cur)), prev.length ? `davor ${s.fmtV(median(prev))} · ${cur.length} / ${prev.length} Einheiten` : `${cur.length} Einheiten`);
+  };
+  [['bike', 'pf-rad'], ['run', 'pf-lauf'], ['swim', 'pf-schwimmen']].forEach(([sp, id]) => {
+    const rows = R[sp].filter(r => r.dn > M.today - days);
+    let t = PS_DEF[sp].map(s => sub(R[sp], s)).join('');
+    if (sp === 'bike') { const best = D.acts.filter(a => a.rw && a.rw.b20).sort((x, y) => y.rw.b20 - x.rw.b20)[0]; t = tile('FTP im Profil', (pr.ftp_watts || '–') + '<small>W</small>', 'eingetragener Wert') + t + (best ? tile('Beste 20 min (12 Monate)', best.rw.b20 + '<small>W</small>', dShort(best.d)) : ''); }
+    if (sp === 'run') { const n = D.acts.filter(a => a.sport === 'run' && a.pw).length, m = D.acts.filter(a => a.sport === 'run').length; t += tile('Läufe mit Watt', `${n} von ${m}`, 'in den letzten 12 Monaten'); }
+    $('#' + id + '-t').innerHTML = t;
+    multiTrend($('#' + id + '-c'), { rows, series: PS_DEF[sp], days, aria: 'Entwicklung ' + SPORT_FMT[sp] });
+  });
+}
+
+function heroSentence() {
+  const w = M.weeks.filter(x => !x.cur).slice(-1)[0], cur = M.cur;
+  return `Letzte Woche ${fmt(w.sec / 3600, 1)} Stunden in ${w.n} Einheiten. Fitness ${fmt(cur.ctl, 1)}, Ermüdung ${fmt(cur.atl, 1)}, Form ${sgn(cur.tsb, 1)}.`;
+}
+
+/* ---- Füllen ---- */
+function fillOverview() {
+  const tot = M.tot, load = sum(Array.from({ length: 365 }, (_, i) => M.loadOn(M.today - i)));
+  mkSeg($('#skySeg'), [{ v: 'h', l: 'Stunden' }, { v: 'l', l: 'Belastung' }], SKY, v => { SKY = v; yearNums(); skyline($('#sky'), SKY); }, true);
+  function yearNums() {
+    const v = SKY === 'h' ? tot.sec / 3600 : load, d = SKY === 'h' ? 1 : 0;
+    $('#yearBig').innerHTML = `<span class="cnt" data-to="${v}" data-d="${d}">${bigHtml(v, d)}</span><small>${SKY === 'h' ? 'Stunden' : 'Punkte'}</small>`;
+    $('#yearThree').innerHTML = `<div><b>${tot.n}</b>Einheiten</div><div><b>${fmt((M.sp.bike || { km: 0 }).km, 0)} km</b>Rad</div><div><b>${fmt((M.sp.run || { km: 0 }).km, 0)} km</b>Lauf</div><div><b>${fmt((M.sp.swim || { km: 0 }).km, 1)} km</b>Schwimmen</div>`;
+  }
+  yearNums(); skyline($('#sky'), SKY);
+}
+function fillTobi() {
+  const m = D.msgs || [], mc = m.filter(x => x.message_type === 'morning_checkin')[0], others = m.filter(x => x !== mc && x.message_type !== 'weather_advice').slice(0, 3);
+  const msgHtml = x => `<div class="msg"><div class="cs">${esc(MSGTYPE[x.message_type] || x.message_type)} · ${dLong(localParts(x.created_at).date)}</div><p>${esc(x.content)}</p></div>`;
+  const wa = m.filter(x => x.message_type === 'weather_advice')[0];
+  $('#morningCard').innerHTML = `<div class="mh2">${orbHtml()}<div><div class="ct">Morgen-Check</div><div class="cs">von Tobi, aus coach_messages</div></div></div>` +
+    (mc ? msgHtml(mc) : `<p class="empty" style="margin:8px 0 0">Noch keiner da: coach_messages ist leer, der Task muss erst laufen.</p>`) +
+    (wa ? `<div class="mh2" style="margin-top:12px">${orbHtml()}<div><div class="ct">Wetter-Hinweis</div></div></div>${msgHtml(wa)}` : '');
+  $('#chatCard').innerHTML = `<form class="ask" onsubmit="return false" style="margin:0"><input placeholder="Chat mit Tobi folgt (Phase B)" disabled aria-label="Chat mit Tobi, noch nicht verfügbar"><button type="button" disabled aria-label="Senden" style="opacity:.4">${ic('send')}</button></form>` + (others.length ? others.map(msgHtml).join('') : '');
+  const rc = rehabCheck(), R = D.rehab;
+  $('#rehabCard').innerHTML = rc.length ? `<div class="ct" style="margin-bottom:6px">Reha-Level gegen Einheiten</div><div class="cs">Level 0 bis 4, zuletzt gesetzt ${R && R.levels.run && R.levels.run.since ? dLong(R.levels.run.since) : '–'} · nur eine Zählung, die Rule Engine rechnet mit dem eingetragenen Level</div><div class="kv" style="margin-top:12px">${rc.map(x => `<div><span>${LVL[x.sp]}: Level ${esc(x.level)}</span><b>${x.n} Einheiten seitdem${x.last ? ', zuletzt ' + dShort(x.last) : ''}</b></div>`).join('')}</div>` : `<div class="ct">Reha-Level gegen Einheiten</div><p class="empty">Kein Reha-Fall in der Datenbank.</p>`;
+}
+function fillReveal() { }
+function fillForm() { formChart($('#formChart'), PERIOD); }
+function fillReadiness() {
+  readinessChart($('#readyChart'), PERIOD);
+  const RT = readinessTrend(), r = D.rd.filter(x => x.dn > M.today - 14), hv = median(r.filter(x => x.hrv).map(x => x.hrv)), sl = median(r.filter(x => x.sleep).map(x => x.sleep));
+  $('#rdKv').innerHTML = [['Ruhepuls, 14 Tage', RT.recent != null ? fmt(RT.recent, 0) + ' bpm' : '–'], ['Ruhepuls, 60 Tage davor', RT.base != null ? fmt(RT.base, 0) + ' bpm' : '–'], ['HRV-Wert, 14 Tage', hv != null ? fmt(hv, 0) : '–'], ['Schlaf, 14 Tage', sl != null ? fmt(sl, 1) + ' h' : '–']].map(x => `<div><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+}
+function fillWeeks() {
+  const nW = PERIOD === 91 ? 13 : PERIOD === 182 ? 26 : 53, wk = M.weeks.slice(-nW), cw = wk.length - 1;
+  const avg = wk.map(w => { const idx = M.weeks.indexOf(w); if (idx < 4) return null; return mean(M.weeks.slice(idx - 4, idx).map(x => x.sec / 3600)); });
+  const jumpI = M.jump ? M.jump.idx - (M.weeks.length - wk.length) : -1;
+  barChart($('#weekChart'), {
+    aria: 'Wochenumfang in Stunden', vals: wk.map(w => w.sec / 3600), labels: wk.map((w, i) => { const e = ds(w.start + 6); return (+e.slice(8) <= 7 || i === 0) ? MON[+e.slice(5, 7) - 1] : ''; }),
+    accent: jumpI >= 0 ? new Set([jumpI]) : new Set(), dashed: cw, avg, hline: { v: M.target / 3600, label: 'Ziel ' + fmt(M.target / 3600, 1) + ' h (abgeleitet)', dash: false, left: true },
+    topLabel: jumpI >= 0 ? { i: jumpI, text: '+' + M.jump.pct + ' %' } : null, yfmt: v => fmt(v, 0),
+    tip: i => { const w = wk[i]; return { date: 'Woche ab ' + dLong(ds(w.start)), rows: [{ c: '#CFCDDA', v: fmt(w.sec / 3600, 1) + ' h', n: w.cur ? 'laufende Woche' : 'Trainingszeit' }, { v: w.n + ' Einheiten' }, { v: fmt(w.km.run, 1) + ' km', n: 'Lauf' }, { v: fmt(w.km.bike, 0) + ' km', n: 'Rad' }, { v: fmt(w.km.swim, 1) + ' km', n: 'Schwimmen' }] }; }
+  });
+  $('#weekFoot').textContent = (M.jump ? `Hervorgehoben: Woche ab ${dLong(ds(M.jump.week.start))} mit ${fmt(M.jump.week.sec / 3600, 1)} h, ${M.jump.pct} % über dem Schnitt der vier Wochen davor (ab 4 h gezählt). ` : '') + 'Das Wochenziel ist der Schnitt der letzten vier abgeschlossenen Wochen, kein Plan.';
+}
+function fillCalendar() {
+  const first = monday(M.today - 364), cw = monday(M.today), nW = (cw - first) / 7 + 1, wrap = $('#cal'); wrap.textContent = '';
+  const cs = 13, gap = 3, wid = nW * (cs + gap);
+  const ml = document.createElement('div'); ml.style.cssText = `position:relative;height:16px;width:${wid}px;font-size:11.5px;color:#6E6D78`;
+  const grid = document.createElement('div'); grid.style.cssText = `display:grid;grid-template-rows:repeat(7,${cs}px);grid-auto-flow:column;grid-auto-columns:${cs}px;gap:${gap}px;width:${wid}px`;
+  const ramp = h => h <= 0 ? '#EEEDF3' : h < 0.75 ? '#DCD5FC' : h < 1.25 ? '#B8A9F8' : h < 2 ? '#8C74F2' : h < 3 ? '#6242EA' : '#3E12E3';
+  let lastM = '';
+  for (let w = 0; w < nW; w++) {
+    const ms = ds(first + w * 7 + 6).slice(0, 7);
+    if (ms !== lastM) { const s = document.createElement('span'); s.textContent = MON[+ms.slice(5) - 1]; s.style.cssText = `position:absolute;left:${w * (cs + gap)}px`; ml.appendChild(s); lastM = ms; }
+    for (let d = 0; d < 7; d++) {
+      const n = first + w * 7 + d, c = document.createElement('div'); c.style.cssText = `width:${cs}px;height:${cs}px;border-radius:4px;`;
+      if (n > M.today) c.style.visibility = 'hidden'; else { const h = M.hoursOn.get(n) || 0; c.style.background = ramp(h); if (n === M.today) c.style.boxShadow = 'inset 0 0 0 2px #0E0D12'; c.addEventListener('pointermove', e => showTip(e, dLong(ds(n)), [{ v: fmt(h, 1) + ' h', n: 'Training' }, { v: fmt(M.loadOn(n), 0), n: 'Belastung' }])); c.addEventListener('pointerleave', hideTip); }
+      grid.appendChild(c);
+    }
+  }
+  wrap.appendChild(ml); wrap.appendChild(grid);
+  const rows = []; for (let n = first; n <= M.today; n++) { const h = M.hoursOn.get(n); if (h) rows.push([ds(n), fmt(h, 1) + ' h']); }
+  srTable(wrap, 'Trainingsstunden je Tag', ['Datum', 'Stunden'], rows);
+}
+function fillMaterial() {
+  const acts = D.acts.filter(a => a.dn > M.today - PERIOD), by = {}; acts.forEach(a => by[a.sport] = (by[a.sport] || 0) + a.sec / 3600);
+  const ent = Object.entries(by).sort((a, b) => b[1] - a[1]), mx = ent.length ? ent[0][1] : 1;
+  $('#spBars').innerHTML = ent.map(([k, h]) => `<div class="hb"><span>${SPORTS[k].l}</span><div class="t"><i style="width:${h / mx * 100}%"></i></div><span>${fmt(h, 1)} h</span></div>`).join('') || '<p class="empty">Keine Einheiten.</p>';
+}
+function fillWeekRows() {
+  const cw = monday(M.today);
+  $('#weekRows').innerHTML = Array.from({ length: 7 }, (_, d) => {
+    const n = cw + d, acts = D.acts.filter(a => a.dn === n), isT = n === M.today, past = n <= M.today;
+    const ist = acts.length ? acts.map(a => `${SPORTS[a.sport].l} ${Math.round(a.sec / 60)} min${a.km && a.sport !== 'strength' ? ' · ' + fmt(a.km, a.sport === 'swim' ? 2 : 1) + ' km' : ''}`).join(' + ') : (past ? 'kein Training' : '');
+    return `<div class="wrow ${isT ? 'today' : ''}" style="grid-template-columns:62px 1fr 24px"><div class="dd"><b>${WD[d]}</b><span>${dShort(ds(n))}</span></div><div class="what"><b style="font-weight:500;font-size:13px">${esc(ist)}</b></div><div class="circ ${acts.length ? 'done' : ''}">${acts.length ? ic('check') : ''}</div></div>`;
+  }).join('');
+}
+
+/* ---- Logbuch ---- */
+let LOG = { sport: 'all', key: 'ts', dir: -1, all: false };
+function fillLog() {
+  const acts = D.acts.filter(a => a.dn > M.today - 365), sports = ['all', ...new Set(acts.map(a => a.sport))];
+  const F = $('#logF'); F.innerHTML = sports.map(s => `<button type="button" data-s="${s}" aria-pressed="${LOG.sport === s}">${s === 'all' ? 'Alle' : SPORTS[s].l}</button>`).join('');
+  F.onclick = e => { const b = e.target.closest('button'); if (!b) return; LOG.sport = b.dataset.s; LOG.all = false; fillLog(); };
+  let rows = acts.filter(a => LOG.sport === 'all' || a.sport === LOG.sport);
+  const kf = { ts: a => a.ts, name: a => a.name.toLowerCase(), sport: a => a.sport, km: a => a.km || 0, sec: a => a.sec, pace: a => a.pace || 1e9, hr: a => a.hr || 0, elev: a => a.elev || 0 };
+  const g = kf[LOG.key]; rows.sort((x, y) => (g(x) > g(y) ? 1 : g(x) < g(y) ? -1 : 0) * LOG.dir);
+  const cols = [['ts', 'Datum'], ['name', 'Einheit'], ['sport', 'Sport'], ['km', 'Distanz'], ['sec', 'Zeit'], ['pace', 'Tempo'], ['hr', 'Puls'], ['elev', 'Höhe']];
+  const shown = LOG.all ? rows : rows.slice(0, 12), T = $('#logT'); T.innerHTML = '';
+  const th = T.createTHead().insertRow(); cols.forEach(([k, t]) => { const c = document.createElement('th'); c.textContent = t + (LOG.key === k ? (LOG.dir > 0 ? ' ↑' : ' ↓') : ''); c.tabIndex = 0; c.onclick = () => { if (LOG.key === k) LOG.dir *= -1; else { LOG.key = k; LOG.dir = k === 'name' || k === 'pace' ? 1 : -1; } fillLog(); }; c.onkeydown = e => { if (e.key === 'Enter') c.click(); }; th.appendChild(c); });
+  const tb = T.createTBody();
+  shown.forEach(a => {
+    const tr = tb.insertRow(), lp = localParts(a.ts);
+    const cells = [`${dLong(a.d)}, ${pad(lp.h)}:${pad(lp.m)}`, a.name || '–', null, a.km ? fmt(a.km, a.sport === 'swim' ? 2 : 1) + ' km' : '–', dur(a.sec), a.sport === 'run' && a.pace ? pace(a.pace) + ' /km' : a.sport === 'bike' && a.km ? fmt(a.km / (a.sec / 3600), 1) + ' km/h' : '–', a.hr ? a.hr + ' bpm' : '–', a.elev != null ? fmt(a.elev, 0) + ' m' : '–'];
+    cells.forEach((v, i) => { const c = tr.insertCell(); if (i === 2) { const s = document.createElement('span'); s.className = 'sp-chip' + (a.sport === 'run' ? ' run' : ''); s.textContent = SPORTS[a.sport].l; c.appendChild(s); } else { c.textContent = v; if (i === 1) c.className = 'nm'; } });
+  });
+  $('#logSub').textContent = `${rows.length} Einheiten in 12 Monaten`;
+  const m = $('#logMore'); m.style.display = rows.length > 12 ? '' : 'none'; m.textContent = LOG.all ? 'Weniger anzeigen' : `Alle ${rows.length} anzeigen`; m.onclick = () => { LOG.all = !LOG.all; fillLog(); };
+}
+
+function fillPeriod() { fillForm(); fillReadiness(); fillWeeks(); fillMaterial(); fillPerf(); }
+function renderAll() {
+  buildPage(); fillOverview(); fillHeute(); fillTobi(); fillKalender(); fillEinheit(); fillCalendar(); fillWeekRows(); fillLog(); fillPeriod();
+  $$('.ins').forEach(b => b.onclick = () => jump(b.dataset.to, true));
+  fillShell(); setupReveal(); showPage(window.CUR_PAGE || (location.hash.slice(1) && SECTIONS.some(s => s.id === location.hash.slice(1)) ? location.hash.slice(1) : 'heute'), true);
+}
+function jump(id, flash) {
+  if (SECTIONS.some(s => s.id === id)) { showPage(id); return; }
+  const t = document.getElementById(id); if (!t) return;
+  const pgEl = t.closest('.pg'); if (pgEl && pgEl.hidden) showPage(pgEl.id.slice(3), true);
+  t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  if (flash) { const c = $('.card', t); if (c) setTimeout(() => { c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1500); }, 350); }
+}
+
+/* ===== Gerüst v2: Navigation, Palette, Login, Start ===== */
+let SNAP_DATE = '', CUR_SEC = 'uebersicht';
+function fillShell() {
+    $('#nav').innerHTML = SECTIONS.map(s => `<a href="#${s.id}" data-id="${s.id}">${ic(s.i)}<span>${s.t}</span></a>`).join('');
+  $('#nav').onclick = e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); jump(a.dataset.id); };
+    $('#tabs').innerHTML = [['heute', 'Heute', 'home'], ['kalender', 'Kalender', 'cal'], ['einheit', 'Einheit', 'bolt'], ['leistung', 'Leistung', 'gauge'], ['ueberblick', 'Überblick', 'layers'], ['daten', 'Daten', 'db']].map(t => `<a class="tab" href="#${t[0]}" data-id="${t[0]}">${ic(t[2])}<span>${t[1]}</span></a>`).join('');
+  $('#tabs').onclick = e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); jump(a.dataset.id); };
+  const live = D.live ? 'Live · ' + new Date(D.live).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr' : 'Schnappschuss · ' + dShort(SNAP_DATE);
+  const tot = M.tot;
+  $('#srccard').innerHTML = `<div class="row"><span class="pulse"></span>TriCoach-Datenbank</div><div>${live}</div><div>${tot.n} Einheiten · ${fmt(tot.km, 0)} km</div><div>Werte aus der Performance Engine</div><button type="button" id="liveBtn">Live aktualisieren</button>`;
+  $('#liveBtn').onclick = openLogin;
+  $('#me').innerHTML = `<span class="av">${esc(NAME[0])}</span><div><b>${esc(NAME)}</b><small>Fitness ${fmt(M.cur.ctl, 1)}</small></div>`;
+  $('#brandSub').textContent = 'TriCoach · Training OS';
+  $('#topDate').textContent = new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', timeZone: TZ });
+  mkSeg($('#rng'), [{ v: 91, l: '3M' }, { v: 182, l: '6M' }, { v: 365, l: '12M' }], PERIOD, v => setPeriod(v), false);
+  $('#liveTop').onclick = openLogin;
+}
+function setPeriod(v) { PERIOD = +v; $('#rng').set(PERIOD); const y = window.scrollY; fillPeriod(); window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); }
+
+/* Seiten */
+function showPage(id, keepScroll) {
+  if (!SECTIONS.some(s => s.id === id)) id = 'heute';
+  window.CUR_PAGE = id; CUR_SEC = id;
+  $$('.pg').forEach(p => { const on = p.id === 'pg-' + id; p.hidden = !on; if (on) $$('.rv', p).forEach(c => c.classList.add('in')); });
+  $$('#nav a, #tabs a').forEach(a => a.classList.toggle('on', a.dataset.id === id));
+  const s = SECTIONS.find(x => x.id === id); $('#topTitle').textContent = s ? s.t : '';
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  if (!keepScroll) window.scrollTo(0, 0);
+  $$('.chartbox').forEach(b => b._redraw && b._redraw());
+}
+/* Auftritt der Karten */
+function setupReveal() {
+  const root = document.documentElement, cards = $$('.rv');
+  root.classList.remove('anim');
+  const allowed = !matchMedia('(prefers-reduced-motion:reduce)').matches && !document.hidden && root.dataset.stand !== 'voll' && !window._revealed;
+  if (!allowed) { cards.forEach(c => c.classList.add('in')); return; }
+  window._revealed = true; root.classList.add('anim');
+  let any = false, k = 0;
+  const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { any = true; const c = e.target; c.style.setProperty('--i', (k++ % 4)); c.classList.add('in'); io.unobserve(c); $$('.cnt', c).forEach(countUp); } }); }, { threshold: 0.08 });
+  cards.forEach(c => io.observe(c));
+  setTimeout(() => { if (!any) { cards.forEach(c => c.classList.add('in')); } }, 2500);
+}
+function countUp(e) {
+  const to = +e.dataset.to, d = +e.dataset.d || 0; if (!isFinite(to)) return; const t0 = performance.now();
+  const step = t => { const p = Math.min(1, (t - t0) / 1100), v = to * (1 - Math.pow(1 - p, 3)); e.innerHTML = bigHtml(p < 1 ? v : to, d); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step); setTimeout(() => { e.innerHTML = bigHtml(to, d); }, 1300);
+}
+
+/* Befehlspalette */
+let PAL = { items: [], sel: 0 };
+function openPalette() {
+  const ov = $('#palOv'); ov.classList.add('show'); $('#palIn').value = ''; renderPal(''); setTimeout(() => $('#palIn').focus(), 20);
+}
+function closeOv() { if (window._gate && !D) return; $$('.ov').forEach(o => o.classList.remove('show')); }
+function palItems() {
+  const items = [];
+  SECTIONS.forEach(s => items.push({ g: 'Springen zu', t: s.t, f: () => jump(s.id) }));
+  items.push({ g: 'Aktionen', t: 'Live aktualisieren', f: openLogin });
+  [[91, '3 Monate'], [182, '6 Monate'], [365, '12 Monate']].forEach(([v, l]) => items.push({ g: 'Aktionen', t: 'Zeitraum ' + l, f: () => setPeriod(v) }));
+  return items;
+}
+function renderPal(q) {
+  q = q.toLowerCase(); PAL.items = palItems().filter(i => i.t.toLowerCase().includes(q)); PAL.sel = 0; const L = $('#palList'); L.textContent = ''; let g = '';
+  PAL.items.forEach((it, i) => { if (it.g !== g) { g = it.g; const h = document.createElement('h6'); h.textContent = g; L.appendChild(h); } const b = document.createElement('button'); b.type = 'button'; b.textContent = it.t; b.dataset.i = i; if (i === 0) b.classList.add('sel'); b.onclick = () => { closeOv(); it.f(); }; L.appendChild(b); });
+  if (!PAL.items.length) { const p = document.createElement('p'); p.className = 'empty'; p.style.padding = '16px'; p.textContent = 'Nichts gefunden.'; L.appendChild(p); }
+}
+function palMove(d) { const bs = $$('#palList button'); if (!bs.length) return; bs[PAL.sel].classList.remove('sel'); PAL.sel = (PAL.sel + d + bs.length) % bs.length; bs[PAL.sel].classList.add('sel'); bs[PAL.sel].scrollIntoView({ block: 'nearest' }); }
+
+/* Login (Live-Daten) */
+function openLogin() { $('#loginOv').classList.add('show'); $('#loginErr').textContent = ''; setTimeout(() => $('#loginMail').focus(), 20); }
+async function applyLive() {
+  const raw = await fetchLive(); if (!raw.activities.length && !raw.pm.length) throw new Error('Keine Daten erhalten – prüfe, ob du mit dem richtigen Konto angemeldet bist.');
+  D = normalize(raw); M = compute(D); renderAll();
+}
+async function doLogin(e) {
+  e.preventDefault(); const btn = $('#loginGo'); btn.disabled = true; btn.textContent = 'Lade …'; $('#loginErr').textContent = '';
+  try { await authCall('password', { email: $('#loginMail').value.trim(), password: $('#loginPw').value }); $('#loginPw').value = ''; await applyLive(); closeOv(); document.body.classList.remove('gate'); }
+  catch (err) { $('#loginErr').textContent = err.message === 'Failed to fetch' || err.name === 'TimeoutError' ? 'Keine Verbindung zur Datenbank.' : err.message; }
+  btn.disabled = false; btn.textContent = 'Anmelden';
+}
+async function silentLive() {
+  const rt = Sess.load(); if (!rt || !/^https?:|^file:/.test(location.protocol)) return;
+  try { await authCall('refresh_token', { refresh_token: rt }); await applyLive(); } catch (e) { if (e && e.message && /refresh|invalid|expired/i.test(e.message)) Sess.clear(); }
+}
+
+/* Start */
+function boot() {
+  const snap = JSON.parse(document.getElementById('snapshot').textContent); SNAP_DATE = snap._snap || '';
+  window._gate = !!snap._online;
+  if (!window._gate) { D = normalize(snap); M = compute(D); renderAll(); }
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette(); return; }
+    if (e.key === 'Escape') closeOv();
+    if ($('#palOv').classList.contains('show')) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); palMove(1); } else if (e.key === 'ArrowUp') { e.preventDefault(); palMove(-1); }
+      else if (e.key === 'Enter') { const it = PAL.items[PAL.sel]; if (it) { e.preventDefault(); closeOv(); it.f(); } }
+    }
+  });
+  $('#palIn').oninput = e => renderPal(e.target.value);
+  $$('.ov').forEach(o => o.addEventListener('pointerdown', e => { if (e.target === o) closeOv(); }));
+  $('#searchBtn').onclick = openPalette; $('#searchBtn2').onclick = openPalette;
+  $('#loginForm').onsubmit = doLogin; $('#loginCancel').onclick = closeOv;
+  if (window._gate) { $('#loginCancel').style.display = 'none'; document.body.classList.add('gate'); gateStart(); } else silentLive();
+}
+async function gateStart() {
+  const rt = Sess.load();
+  if (rt) { try { await authCall('refresh_token', { refresh_token: rt }); await applyLive(); closeOv(); document.body.classList.remove('gate'); return; } catch (e) { if (e && e.message && /refresh|invalid|expired/i.test(e.message)) Sess.clear(); } }
+  openLogin();
+}
+document.addEventListener('DOMContentLoaded', boot);
+
+
+document.getElementById('footDate').textContent=new Date().toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Berlin'});
+</script>
+</body>
+</html>
